@@ -247,13 +247,15 @@ exports.optionsPaginationParams = ['limit', 'skip', 'count'];
  */
 const normaliseMongoFilter = (filter, regexFields, excludeFields) => {
     const _filter = {};
-    const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields : exports.optionsPaginationParams;
+    const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields :
+        exports.optionsPaginationParams;
     Object.keys(filter).forEach((f) => {
         const v = filter[f];
-        if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined || excludeParams.includes(f))) {
+        if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined ||
+            excludeParams.includes(f))) {
             _filter[f] = filter[f];
             if (regexFields.includes(f))
-                _filter[f] = { $regex: filter[f] };
+                _filter[f] = { $regex: filter[f], $options: 'i' };
         }
     });
     return _filter;

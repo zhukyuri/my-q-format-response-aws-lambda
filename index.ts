@@ -318,16 +318,20 @@ export type TMongoFilterNormalise = {[fieldName: string]: any}
  * @param filter
  * @param excludeFields
  */
-export const normaliseMongoFilter = (filter: TMongoFilterNormalise, regexFields: string[], excludeFields?: string[]) => {
+export const normaliseMongoFilter = (filter: TMongoFilterNormalise, regexFields: string[],
+  excludeFields?: string[],
+) => {
   const _filter: TMongoFilterNormalise = {};
-  const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields : optionsPaginationParams;
+  const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields :
+    optionsPaginationParams;
 
   Object.keys(filter).forEach((f) => {
     const v = filter[f];
-    if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined || excludeParams.includes(f))) {
+    if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined ||
+      excludeParams.includes(f))) {
       _filter[f] = filter[f];
 
-      if (regexFields.includes(f)) _filter[f] = { $regex: filter[f] };
+      if (regexFields.includes(f)) _filter[f] = { $regex: filter[f], $options: 'i' };
     }
   });
 
@@ -354,7 +358,9 @@ export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPag
   return res;
 };
 
-export const controlResponseNull = (data: object, okResultOf: 'create' | 'update' | 'update_many' | 'increment' | 'decrement', prefix: string, bodyWrap: boolean = true) => {
+export const controlResponseNull = (data: object,
+  okResultOf: 'create' | 'update' | 'update_many' | 'increment' | 'decrement', prefix: string, bodyWrap: boolean = true,
+) => {
   let result;
 
   if (data) {
