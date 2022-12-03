@@ -331,7 +331,7 @@ export const normaliseMongoFilter = (filter: TMongoFilterNormalise, regexFields:
       excludeParams.includes(f))) {
       _filter[f] = filter[f];
 
-      if (regexFields.includes(f)) _filter[f] = { $regex: filter[f], $options: 'im' };
+      if (regexFields.includes(f)) _filter[f] = { $regex: new RegExp(`/${filter[f]}/gi`) };
     }
   });
 
