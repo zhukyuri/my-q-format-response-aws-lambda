@@ -255,7 +255,7 @@ const normaliseMongoFilter = (filter, regexFields, excludeFields) => {
             excludeParams.includes(f))) {
             _filter[f] = filter[f];
             if (regexFields.includes(f))
-                _filter[f] = { $regex: new RegExp(`/${filter[f]}/gi`) };
+                _filter[f] = { $regex: new RegExp(_filter[f], 'i') };
         }
     });
     return _filter;
