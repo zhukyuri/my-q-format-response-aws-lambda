@@ -255,7 +255,7 @@ const normaliseMongoFilter = (filter, regexFields, excludeFields) => {
             excludeParams.includes(f))) {
             _filter[f] = filter[f];
             if (regexFields.includes(f))
-                _filter[f] = { $regex: filter[f], $options: 'ig' };
+                _filter[f] = { $regex: filter[f], $options: 'im' };
         }
     });
     return _filter;
