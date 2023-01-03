@@ -92,10 +92,15 @@ class Result {
     bodyToString() {
         let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error);
         const valueBody = {
-            statusResult: this.statusResult, message: this.message, data: this.data, count: this.count, error: _err,
+            statusResult: this.statusResult,
+            message: this.message,
+            data: this.data,
+            count: this.count,
+            error: _err,
         };
         const valueBodyWrap = {
-            statusCode: this.statusCode, body: JSON.stringify(valueBody),
+            statusCode: this.statusCode,
+            body: JSON.stringify(valueBody),
         };
         return this.bodyWrap ? valueBodyWrap : valueBody;
     }
@@ -108,9 +113,14 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static success({ data = null, count = null, message = 'success', bodyWrap = true }) {
+    static success({ data = null, count = null, message = 'success', bodyWrap = true, }) {
         const result = new Result({
-            statusCode: StatusCode.OK, statusResult: StatusResult.ok, message, data, count, bodyWrap,
+            statusCode: StatusCode.OK,
+            statusResult: StatusResult.ok,
+            message,
+            data,
+            count,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -120,9 +130,13 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static created({ data, message = 'created', bodyWrap = true }) {
+    static created({ data, message = 'created', bodyWrap = true, }) {
         const result = new Result({
-            statusCode: StatusCode.Created, statusResult: StatusResult.ok, message, data, bodyWrap,
+            statusCode: StatusCode.Created,
+            statusResult: StatusResult.ok,
+            message,
+            data,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -132,9 +146,13 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updated({ data, message = 'updated', bodyWrap = true }) {
+    static updated({ data, message = 'updated', bodyWrap = true, }) {
         const result = new Result({
-            statusCode: StatusCode.OK, statusResult: StatusResult.ok, message, data, bodyWrap,
+            statusCode: StatusCode.OK,
+            statusResult: StatusResult.ok,
+            message,
+            data,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -144,9 +162,13 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static notFound({ error = null, message = '', bodyWrap = true }) {
+    static notFound({ error = null, message = '', bodyWrap = true, }) {
         const result = new Result({
-            statusCode: StatusCode.NotFound, statusResult: StatusResult.notFound, message, error, bodyWrap,
+            statusCode: StatusCode.NotFound,
+            statusResult: StatusResult.notFound,
+            message,
+            error,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -159,7 +181,11 @@ class CreateResponse {
      */
     static error({ error = null, statusCode = StatusCode.BadRequest, message = 'Error', bodyWrap = true, }) {
         const result = new Result({
-            statusCode, statusResult: StatusResult.error, error, message, bodyWrap,
+            statusCode,
+            statusResult: StatusResult.error,
+            error,
+            message,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -175,7 +201,13 @@ class CreateResponse {
      */
     static custom({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message = '', error = null, data = null, count = null, bodyWrap = true, }) {
         const result = new Result({
-            statusCode, statusResult, message, error, data, count, bodyWrap,
+            statusCode,
+            statusResult,
+            message,
+            error,
+            data,
+            count,
+            bodyWrap,
         });
         return result.bodyToString();
     }
@@ -184,14 +216,15 @@ exports.CreateResponse = CreateResponse;
 const messagesREST = (prefix, suffix = '') => {
     return {
         TOTAL: `${prefix}_TOTAL${suffix}`,
+        NOT_FOUND: `${prefix}_NOT_FOUND${suffix}`,
         CREATE: `${prefix}_ITEM_CREATE${suffix}`,
         NOT_CREATE: `${prefix}_ITEM_NOT_CREATE${suffix}`,
         ERROR_CREATE: `${prefix}_ITEM_ERROR_CREATE${suffix}`,
         UPDATE: `${prefix}_ITEM_UPDATE${suffix}`,
-        UPDATE_MANY: `${prefix}_ITEM_UPDATE_MANY${suffix}`,
-        NOT_UPDATE: `${prefix}_ITEM_NOT_UPDATE${suffix}`,
-        NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
         ERROR_UPDATE: `${prefix}_ITEM_ERROR_UPDATE${suffix}`,
+        NOT_UPDATE: `${prefix}_ITEM_NOT_UPDATE${suffix}`,
+        UPDATE_MANY: `${prefix}_ITEM_UPDATE_MANY${suffix}`,
+        NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
         ERROR_UPDATE_MANY: `${prefix}_ITEM_ERROR_UPDATE_MANY${suffix}`,
         GET: `${prefix}_ITEM_GET${suffix}`,
         NOT_GET: `${prefix}_ITEM_NOT_GET${suffix}`,
@@ -211,7 +244,6 @@ const messagesREST = (prefix, suffix = '') => {
         DELETE_MANY: `${prefix}_DELETE_MANY${suffix}`,
         NOT_DELETE_MANY: `${prefix}_NOT_DELETE_MANY${suffix}`,
         ERROR_DELETE_MANY: `${prefix}_ERROR_DELETE_MANY${suffix}`,
-        NOT_FOUND: `${prefix}_NOT_FOUND${suffix}`,
         INITIALISE: `${prefix}_INITIALISE${suffix}`,
         NOT_INITIALISE: `${prefix}_NOT_INITIALISE${suffix}`,
         ERROR_INITIALISE: `${prefix}_ERROR_INITIALISE${suffix}`,
@@ -229,12 +261,25 @@ const messagesREST = (prefix, suffix = '') => {
         ERROR_COUNTER_MONTH: `${prefix}_ERROR_COUNTER_MONTH${suffix}`,
         COUNTER_YEAR: `${prefix}_COUNTER_YEAR${suffix}`,
         NOT_COUNTER_YEAR: `${prefix}_NOT_COUNTER_YEAR${suffix}`,
+        ERROR_COUNTER_YEAR: `${prefix}_ERROR_COUNTER_YEAR${suffix}`,
         TEST: `${prefix}_TEST${suffix}`,
         NOT_TEST: `${prefix}_NOT_TEST${suffix}`,
         ERROR_TEST: `${prefix}_ERROR_TEST${suffix}`,
         AGGREGATION: `${prefix}_AGGREGATION${suffix}`,
         NOT_AGGREGATION: `${prefix}_NOT_AGGREGATION${suffix}`,
         ERROR_AGGREGATION: `${prefix}_ERROR_AGGREGATION${suffix}`,
+        USER_REGISTRATION: `${prefix}_USER_REGISTRATION${suffix}`,
+        NOT_USER_REGISTRATION: `${prefix}_NOT_USER_REGISTRATION${suffix}`,
+        ERROR_USER_REGISTRATION: `${prefix}_ERROR_USER_REGISTRATION${suffix}`,
+        USER_LOGIN: `${prefix}_USER_LOGIN${suffix}`,
+        NOT_USER_LOGIN: `${prefix}_NOT_USER_LOGIN${suffix}`,
+        ERROR_USER_LOGIN: `${prefix}_ERROR_USER_LOGIN${suffix}`,
+        USER_LOGOUT: `${prefix}_USER_LOGOUT${suffix}`,
+        NOT_USER_LOGOUT: `${prefix}_NOT_USER_LOGOUT${suffix}`,
+        ERROR_USER_LOGOUT: `${prefix}_ERROR_USER_LOGOUT${suffix}`,
+        USER_REGISTRATION_REFRESH: `${prefix}_USER_REGISTRATION_REFRESH${suffix}`,
+        NOT_USER_REGISTRATION_REFRESH: `${prefix}_NOT_USER_REGISTRATION_REFRESH${suffix}`,
+        ERROR_USER_REGISTRATION_REFRESH: `${prefix}_ERROR_USER_REGISTRATION_REFRESH${suffix}`,
     };
 };
 exports.messagesREST = messagesREST;
@@ -267,7 +312,8 @@ exports.normaliseMongoFilter = normaliseMongoFilter;
  */
 const normaliseMongoPaginate = (filter) => {
     let res = {
-        skip: 0, limit: 50,
+        skip: 0,
+        limit: 50,
     };
     res.skip = filter && filter.skip ? parseInt(filter.skip, 10) || 0 : 0;
     res.limit = filter && filter.limit ? parseInt(filter.limit, 10) || 50 : 50;
@@ -279,27 +325,37 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
     if (data) {
         if (okResultOf === 'create') {
             result = CreateResponse.created({
-                data, message: (0, exports.messagesREST)(prefix).CREATE, bodyWrap,
+                data,
+                message: (0, exports.messagesREST)(prefix).CREATE,
+                bodyWrap,
             });
         }
         if (okResultOf === 'update') {
             result = CreateResponse.updated({
-                data, message: (0, exports.messagesREST)(prefix).UPDATE, bodyWrap,
+                data,
+                message: (0, exports.messagesREST)(prefix).UPDATE,
+                bodyWrap,
             });
         }
         if (okResultOf === 'update_many') {
             result = CreateResponse.updated({
-                data, message: (0, exports.messagesREST)(prefix).UPDATE_MANY, bodyWrap,
+                data,
+                message: (0, exports.messagesREST)(prefix).UPDATE_MANY,
+                bodyWrap,
             });
         }
         if (okResultOf === 'increment') {
             result = CreateResponse.updated({
-                data, message: (0, exports.messagesREST)(prefix).INCREMENT, bodyWrap,
+                data,
+                message: (0, exports.messagesREST)(prefix).INCREMENT,
+                bodyWrap,
             });
         }
         if (okResultOf === 'decrement') {
             result = CreateResponse.updated({
-                data, message: (0, exports.messagesREST)(prefix).DECREMENT, bodyWrap,
+                data,
+                message: (0, exports.messagesREST)(prefix).DECREMENT,
+                bodyWrap,
             });
         }
     }
@@ -316,7 +372,9 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
         if (okResultOf === 'decrement')
             messageErr = (0, exports.messagesREST)(prefix).NOT_DECREMENT;
         result = CreateResponse.error({
-            data: data, message: messageErr, bodyWrap,
+            data: data,
+            message: messageErr,
+            bodyWrap,
         });
     }
     return result;
