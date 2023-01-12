@@ -7,6 +7,7 @@ exports.StatusResult = StatusResult;
 StatusResult.ok = 'Ok';
 StatusResult.error = 'Error';
 StatusResult.notFound = 'NotFound';
+StatusResult.unauthorized = 'Unauthorized';
 class StatusCode {
 }
 exports.StatusCode = StatusCode;
@@ -183,6 +184,23 @@ class CreateResponse {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.error,
+            error,
+            message,
+            bodyWrap,
+        });
+        return result.bodyToString();
+    }
+    /**
+      * Unauthorized
+      * @param error
+      * @param statusCode
+      * @param message
+      * @param bodyWrap
+      */
+    static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = 'Unauthorized', bodyWrap = true, }) {
+        const result = new Result({
+            statusCode,
+            statusResult: StatusResult.unauthorized,
             error,
             message,
             bodyWrap,
