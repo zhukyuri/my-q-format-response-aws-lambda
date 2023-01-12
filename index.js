@@ -235,6 +235,9 @@ const messagesREST = (prefix, suffix = '') => {
     return {
         TOTAL: `${prefix}_TOTAL${suffix}`,
         NOT_FOUND: `${prefix}_NOT_FOUND${suffix}`,
+        AUTHORISED: `${prefix}_AUTHORISED${suffix}`,
+        UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
+        ERROR_AUTHORISED: `${prefix}_ERROR_AUTHORISED${suffix}`,
         CREATE: `${prefix}_ITEM_CREATE${suffix}`,
         NOT_CREATE: `${prefix}_ITEM_NOT_CREATE${suffix}`,
         ERROR_CREATE: `${prefix}_ITEM_ERROR_CREATE${suffix}`,
