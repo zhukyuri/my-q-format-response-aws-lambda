@@ -272,6 +272,7 @@ export class CreateResponse {
     return result.bodyToString();
   }
 
+
  /**
    * Unauthorized
    * @param error
@@ -413,9 +414,9 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
     NOT_USER_LOGOUT: `${prefix}_NOT_USER_LOGOUT${suffix}`,
     ERROR_USER_LOGOUT: `${prefix}_ERROR_USER_LOGOUT${suffix}`,
 
-    USER_REGISTRATION_REFRESH: `${prefix}_USER_REGISTRATION_REFRESH${suffix}`,
-    NOT_USER_REGISTRATION_REFRESH: `${prefix}_NOT_USER_REGISTRATION_REFRESH${suffix}`,
-    ERROR_USER_REGISTRATION_REFRESH: `${prefix}_ERROR_USER_REGISTRATION_REFRESH${suffix}`,
+    USER_AUTHENTICATION_REFRESH: `${prefix}_USER_AUTHENTICATION_REFRESH${suffix}`,
+    NOT_USER_AUTHENTICATION_REFRESH: `${prefix}_NOT_USER_AUTHENTICATION_REFRESH${suffix}`,
+    ERROR_USER_AUTHENTICATION_REFRESH: `${prefix}_ERROR_USER_AUTHENTICATION_REFRESH${suffix}`,
   };
 };
 
