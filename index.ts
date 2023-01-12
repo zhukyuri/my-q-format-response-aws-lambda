@@ -2,6 +2,7 @@ export class StatusResult {
   static ok = 'Ok';
   static error = 'Error';
   static notFound = 'NotFound';
+  static unauthorized = 'Unauthorized';
 }
 
 export class StatusCode {
@@ -264,6 +265,29 @@ export class CreateResponse {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.error,
+      error,
+      message,
+      bodyWrap,
+    });
+    return result.bodyToString();
+  }
+
+ /**
+   * Unauthorized
+   * @param error
+   * @param statusCode
+   * @param message
+   * @param bodyWrap
+   */
+  static unauthorized({
+    error = null,
+    statusCode = StatusCode.Unauthorized,
+    message = 'Unauthorized',
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
+    const result = new Result({
+      statusCode,
+      statusResult: StatusResult.unauthorized,
       error,
       message,
       bodyWrap,
