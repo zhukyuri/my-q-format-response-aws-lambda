@@ -235,6 +235,7 @@ const messagesREST = (prefix, suffix = '') => {
     return {
         TOTAL: `${prefix}_TOTAL${suffix}`,
         NOT_FOUND: `${prefix}_NOT_FOUND${suffix}`,
+        TOKEN_EXPIRED_ERROR: `${prefix}_TOKEN_EXPIRED_ERROR${suffix}`,
         AUTHORISED: `${prefix}_AUTHORISED${suffix}`,
         UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
         ERROR_AUTHORISED: `${prefix}_ERROR_AUTHORISED${suffix}`,
