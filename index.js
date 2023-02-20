@@ -8,6 +8,7 @@ StatusResult.ok = 'Ok';
 StatusResult.error = 'Error';
 StatusResult.notFound = 'NotFound';
 StatusResult.unauthorized = 'Unauthorized';
+StatusResult.needRedirect = 'NeedRedirect';
 class StatusCode {
 }
 exports.StatusCode = StatusCode;
@@ -67,6 +68,7 @@ class ResponseBodyVO {
         this.data = null;
         this.count = null;
         this.error = null;
+        this.redirectTo = undefined;
     }
 }
 exports.ResponseBodyVO = ResponseBodyVO;
@@ -78,13 +80,14 @@ class ResponseVO {
 }
 exports.ResponseVO = ResponseVO;
 class Result {
-    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, bodyWrap = true, }) {
+    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, redirectTo = undefined, bodyWrap = true, }) {
         this.statusCode = statusCode;
         this.statusResult = statusResult;
         this.message = !message ? '' : message;
         this.count = count;
         this.data = data;
         this.error = error;
+        this.redirectTo = redirectTo;
         this.bodyWrap = bodyWrap;
     }
     /**
@@ -169,6 +172,7 @@ class CreateResponse {
             statusCode: StatusCode.NotFound,
             statusResult: StatusResult.notFound,
             message,
+            data: null,
             error,
             bodyWrap,
         });
@@ -185,6 +189,7 @@ class CreateResponse {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.error,
+            data: null,
             error,
             message,
             bodyWrap,
@@ -202,6 +207,7 @@ class CreateResponse {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.unauthorized,
+            data: null,
             error,
             message,
             bodyWrap,
@@ -215,12 +221,14 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, }) {
+    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, redirectTo = '' }) {
         const result = new Result({
             statusCode,
-            statusResult: StatusResult.unauthorized,
+            statusResult: StatusResult.needRedirect,
+            data: null,
             error: null,
             message,
+            redirectTo,
             bodyWrap,
         });
         return result.bodyToString();
