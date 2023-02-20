@@ -3,6 +3,7 @@ export class StatusResult {
   static error = 'Error';
   static notFound = 'NotFound';
   static unauthorized = 'Unauthorized';
+  static needRedirect = 'NeedRedirect';
 }
 
 export class StatusCode {
@@ -20,13 +21,14 @@ export class StatusCode {
   // static MultiStatus = 207;
 
 
-  // static MultipleChoices = 300;
-  // static MovedPermanently = 301;
-  // static MovedTemporarily = 302;
-  // static SeeOther = 303;
+  static MultipleChoices = 300;
+  static MovedPermanently = 301;
+  static MovedTemporarily = 302;
+  static SeeOther = 303;
   // static UseProxy = 305;
   // static NotModified = 304;
-  // static TemporaryRedirect = 307;
+  static TemporaryRedirect = 307;
+  // static PermanentRedirect = 308;
 
 
   static BadRequest = 400;
@@ -73,6 +75,7 @@ export class StatusCode {
 type TData = object | boolean | string | null;
 type TCount = number | null;
 type TError = any | null;
+type TRedirectTo = string | undefined;
 
 interface TResultIn {
   statusCode?: StatusCode;
@@ -81,6 +84,7 @@ interface TResultIn {
   data?: TData;
   count?: TCount;
   error?: TError;
+  redirectTo?: TRedirectTo;
   bodyWrap: boolean;
 }
 
@@ -91,6 +95,7 @@ interface TFuncParams {
   error?: TError,
   data?: TData,
   count?: TCount,
+  redirectTo?: TRedirectTo;
   bodyWrap?: boolean;
 }
 
@@ -100,6 +105,7 @@ export class ResponseBodyVO {
   data: TData = null;
   count: TCount = null;
   error: TError = null;
+  redirectTo?: TRedirectTo = undefined;
 }
 
 export class ResponseVO {
@@ -117,23 +123,26 @@ class Result {
   private data: TData;
   private count: TCount;
   private error: any;
+  private redirectTo: TRedirectTo;
   private bodyWrap: boolean;
 
   constructor({
-    statusCode = StatusCode.OK,
-    statusResult = StatusResult.ok,
-    message,
-    data = null,
-    count = null,
-    error = null,
-    bodyWrap = true,
-  }: TResultIn) {
+                statusCode = StatusCode.OK,
+                statusResult = StatusResult.ok,
+                message,
+                data = null,
+                count = null,
+                error = null,
+                redirectTo = undefined,
+                bodyWrap = true,
+              }: TResultIn) {
     this.statusCode = statusCode;
     this.statusResult = statusResult;
     this.message = !message ? '' : message;
     this.count = count;
     this.data = data;
     this.error = error;
+    this.redirectTo = redirectTo;
     this.bodyWrap = bodyWrap;
   }
 
@@ -170,11 +179,11 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static success({
-    data = null,
-    count = null,
-    message = 'success',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                   data = null,
+                   count = null,
+                   message = 'success',
+                   bodyWrap = true,
+                 }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -193,10 +202,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static created({
-    data,
-    message = 'created',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                   data,
+                   message = 'created',
+                   bodyWrap = true,
+                 }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
@@ -214,10 +223,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static updated({
-    data,
-    message = 'updated',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                   data,
+                   message = 'updated',
+                   bodyWrap = true,
+                 }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -235,14 +244,15 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static notFound({
-    error = null,
-    message = '',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                    error = null,
+                    message = '',
+                    bodyWrap = true,
+                  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.NotFound,
       statusResult: StatusResult.notFound,
       message,
+      data: null,
       error,
       bodyWrap,
     });
@@ -257,14 +267,15 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static error({
-    error = null,
-    statusCode = StatusCode.BadRequest,
-    message = 'Error',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                 error = null,
+                 statusCode = StatusCode.BadRequest,
+                 message = 'Error',
+                 bodyWrap = true,
+               }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.error,
+      data: null,
       error,
       message,
       bodyWrap,
@@ -273,7 +284,7 @@ export class CreateResponse {
   }
 
 
- /**
+  /**
    * Unauthorized
    * @param error
    * @param statusCode
@@ -281,16 +292,43 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static unauthorized({
-    error = null,
-    statusCode = StatusCode.Unauthorized,
-    message = 'Unauthorized',
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                        error = null,
+                        statusCode = StatusCode.Unauthorized,
+                        message = 'Unauthorized',
+                        bodyWrap = true,
+                      }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.unauthorized,
+      data: null,
       error,
       message,
+      bodyWrap,
+    });
+    return result.bodyToString();
+  }
+
+
+  /**
+   * Redirect
+   * @param error
+   * @param statusCode
+   * @param message
+   * @param bodyWrap
+   */
+  static redirect({
+                    statusCode = StatusCode.MovedTemporarily,
+                    message = '',
+                    bodyWrap = true,
+                    redirectTo = ''
+                  }: TFuncParams): ResponseVoAWS {
+    const result = new Result({
+      statusCode,
+      statusResult: StatusResult.needRedirect,
+      data: null,
+      error: null,
+      message,
+      redirectTo,
       bodyWrap,
     });
     return result.bodyToString();
@@ -307,14 +345,14 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static custom({
-    statusCode = StatusCode.OK,
-    statusResult = StatusResult.ok,
-    message = '',
-    error = null,
-    data = null,
-    count = null,
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+                  statusCode = StatusCode.OK,
+                  statusResult = StatusResult.ok,
+                  message = '',
+                  error = null,
+                  data = null,
+                  count = null,
+                  bodyWrap = true,
+                }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult,
@@ -428,7 +466,7 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
 
 export const optionsPaginationParams = ['limit', 'skip', 'count'];
 
-export type TMongoFilterNormalise = {[fieldName: string]: any}
+export type TMongoFilterNormalise = { [fieldName: string]: any }
 
 /**
  * Normalise filter for mongoose
@@ -447,7 +485,7 @@ export const normaliseMongoFilter = (filter: TMongoFilterNormalise, regexFields:
       excludeParams.includes(f))) {
       _filter[f] = filter[f];
 
-      if (regexFields.includes(f)) _filter[f] = { $regex: new RegExp(_filter[f], 'gi') };
+      if (regexFields.includes(f)) _filter[f] = {$regex: new RegExp(_filter[f], 'gi')};
     }
   });
 

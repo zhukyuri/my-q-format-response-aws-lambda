@@ -22,13 +22,14 @@ StatusCode.NoContent = 204;
 // static ResetContent = 205;
 // static PartialContent = 206;
 // static MultiStatus = 207;
-// static MultipleChoices = 300;
-// static MovedPermanently = 301;
-// static MovedTemporarily = 302;
-// static SeeOther = 303;
+StatusCode.MultipleChoices = 300;
+StatusCode.MovedPermanently = 301;
+StatusCode.MovedTemporarily = 302;
+StatusCode.SeeOther = 303;
 // static UseProxy = 305;
 // static NotModified = 304;
-// static TemporaryRedirect = 307;
+StatusCode.TemporaryRedirect = 307;
+// static PermanentRedirect = 308;
 StatusCode.BadRequest = 400;
 StatusCode.Unauthorized = 401;
 StatusCode.PaymentRequired = 402;
@@ -191,17 +192,34 @@ class CreateResponse {
         return result.bodyToString();
     }
     /**
-      * Unauthorized
-      * @param error
-      * @param statusCode
-      * @param message
-      * @param bodyWrap
-      */
+     * Unauthorized
+     * @param error
+     * @param statusCode
+     * @param message
+     * @param bodyWrap
+     */
     static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = 'Unauthorized', bodyWrap = true, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.unauthorized,
             error,
+            message,
+            bodyWrap,
+        });
+        return result.bodyToString();
+    }
+    /**
+     * Redirect
+     * @param error
+     * @param statusCode
+     * @param message
+     * @param bodyWrap
+     */
+    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, }) {
+        const result = new Result({
+            statusCode,
+            statusResult: StatusResult.unauthorized,
+            error: null,
             message,
             bodyWrap,
         });
