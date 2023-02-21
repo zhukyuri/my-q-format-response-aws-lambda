@@ -103,6 +103,8 @@ class Result {
             count: this.count,
             error: _err,
         };
+        if (this.redirectTo)
+            valueBody.redirectTo = this.redirectTo;
         const valueBodyWrap = {
             statusCode: this.statusCode,
             body: JSON.stringify(valueBody),
