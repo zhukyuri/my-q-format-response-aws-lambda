@@ -391,6 +391,10 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
     NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
     ERROR_UPDATE_MANY: `${prefix}_ITEM_ERROR_UPDATE_MANY${suffix}`,
 
+    GET_ONE_AND_CHILDREN: `${prefix}_GET_ONE_AND_CHILDREN${suffix}`,
+    NOT_GET_ONE_AND_CHILDREN: `${prefix}_NOT_GET_ONE_AND_CHILDREN${suffix}`,
+    ERROR_GET_ONE_AND_CHILDREN: `${prefix}_ERROR_GET_ONE_AND_CHILDREN${suffix}`,
+
     GET: `${prefix}_ITEM_GET${suffix}`,
     NOT_GET: `${prefix}_ITEM_NOT_GET${suffix}`,
     ERROR_GET: `${prefix}_ITEM_ERROR_GET${suffix}`,
