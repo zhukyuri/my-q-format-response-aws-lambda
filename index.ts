@@ -379,6 +379,10 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
     UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
     ERROR_AUTHORISED: `${prefix}_ERROR_AUTHORISED${suffix}`,
 
+    IDENTIFIER: `${prefix}_IDENTIFIER${suffix}`,
+    NOT_IDENTIFIER: `${prefix}_NOT_IDENTIFIER${suffix}`,
+    ERROR_IDENTIFIER: `${prefix}_ERROR_IDENTIFIER${suffix}`,
+
     CREATE: `${prefix}_ITEM_CREATE${suffix}`,
     NOT_CREATE: `${prefix}_ITEM_NOT_CREATE${suffix}`,
     ERROR_CREATE: `${prefix}_ITEM_ERROR_CREATE${suffix}`,
