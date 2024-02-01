@@ -164,6 +164,22 @@ class CreateResponse {
         return result.bodyToString();
     }
     /**
+     * Update or Create
+     * @param data
+     * @param message
+     * @param bodyWrap
+     */
+    static updateOrCreate({ data, message = 'update_or_create', bodyWrap = true, }) {
+        const result = new Result({
+            statusCode: StatusCode.OK,
+            statusResult: StatusResult.ok,
+            message,
+            data,
+            bodyWrap,
+        });
+        return result.bodyToString();
+    }
+    /**
      * Not Found
      * @param error
      * @param message
@@ -276,6 +292,9 @@ const messagesREST = (prefix, suffix = '') => {
         UPDATE: `${prefix}_ITEM_UPDATE${suffix}`,
         ERROR_UPDATE: `${prefix}_ITEM_ERROR_UPDATE${suffix}`,
         NOT_UPDATE: `${prefix}_ITEM_NOT_UPDATE${suffix}`,
+        UPDATE_OR_CREATE: `${prefix}_ITEM_UPDATE_OR_CREATE${suffix}`,
+        ERROR_UPDATE_OR_CREATE: `${prefix}_ITEM_UPDATE_OR_CREATE${suffix}`,
+        NOT_UPDATE_OR_CREATE: `${prefix}_ITEM_NOT_UPDATE_OR_CREATE${suffix}`,
         UPDATE_MANY: `${prefix}_ITEM_UPDATE_MANY${suffix}`,
         NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
         ERROR_UPDATE_MANY: `${prefix}_ITEM_ERROR_UPDATE_MANY${suffix}`,
@@ -393,6 +412,13 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 bodyWrap,
             });
         }
+        if (okResultOf === 'update_or_create') {
+            result = CreateResponse.updateOrCreate({
+                data,
+                message: (0, exports.messagesREST)(prefix).UPDATE_OR_CREATE,
+                bodyWrap,
+            });
+        }
         if (okResultOf === 'update_many') {
             result = CreateResponse.updated({
                 data,
@@ -421,6 +447,8 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
             messageErr = (0, exports.messagesREST)(prefix).NOT_CREATE;
         if (okResultOf === 'update')
             messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE;
+        if (okResultOf === 'update_or_create')
+            messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE_OR_CREATE;
         if (okResultOf === 'update_many')
             messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE_MANY;
         if (okResultOf === 'increment')

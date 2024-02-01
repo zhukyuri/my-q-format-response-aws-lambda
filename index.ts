@@ -239,6 +239,27 @@ export class CreateResponse {
   }
 
   /**
+   * Update or Create
+   * @param data
+   * @param message
+   * @param bodyWrap
+   */
+  static updateOrCreate({
+                   data,
+                   message = 'update_or_create',
+                   bodyWrap = true,
+                 }: TFuncParams): ResponseVoAWS {
+    const result = new Result({
+      statusCode: StatusCode.OK,
+      statusResult: StatusResult.ok,
+      message,
+      data,
+      bodyWrap,
+    });
+    return result.bodyToString();
+  }
+
+  /**
    * Not Found
    * @param error
    * @param message
@@ -391,6 +412,10 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
     ERROR_UPDATE: `${prefix}_ITEM_ERROR_UPDATE${suffix}`,
     NOT_UPDATE: `${prefix}_ITEM_NOT_UPDATE${suffix}`,
 
+    UPDATE_OR_CREATE: `${prefix}_ITEM_UPDATE_OR_CREATE${suffix}`,
+    ERROR_UPDATE_OR_CREATE: `${prefix}_ITEM_UPDATE_OR_CREATE${suffix}`,
+    NOT_UPDATE_OR_CREATE: `${prefix}_ITEM_NOT_UPDATE_OR_CREATE${suffix}`,
+
     UPDATE_MANY: `${prefix}_ITEM_UPDATE_MANY${suffix}`,
     NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
     ERROR_UPDATE_MANY: `${prefix}_ITEM_ERROR_UPDATE_MANY${suffix}`,
@@ -522,7 +547,7 @@ export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPag
   return res;
 };
 
-export const controlResponseNull = (data: object, okResultOf: 'create' | 'update' | 'update_many' | 'increment' | 'decrement', prefix: string, bodyWrap: boolean = true) => {
+export const controlResponseNull = (data: object, okResultOf: 'create' | 'update'| 'update_or_create' | 'update_many' | 'increment' | 'decrement', prefix: string, bodyWrap: boolean = true) => {
   let result;
 
   if (data) {
@@ -538,6 +563,14 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).UPDATE,
+        bodyWrap,
+      });
+    }
+
+    if (okResultOf === 'update_or_create') {
+      result = CreateResponse.updateOrCreate({
+        data,
+        message: messagesREST(prefix).UPDATE_OR_CREATE,
         bodyWrap,
       });
     }
@@ -570,6 +603,7 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
     let messageErr = '';
     if (okResultOf === 'create') messageErr = messagesREST(prefix).NOT_CREATE;
     if (okResultOf === 'update') messageErr = messagesREST(prefix).NOT_UPDATE;
+    if (okResultOf === 'update_or_create') messageErr = messagesREST(prefix).NOT_UPDATE_OR_CREATE;
     if (okResultOf === 'update_many') messageErr = messagesREST(prefix).NOT_UPDATE_MANY;
     if (okResultOf === 'increment') messageErr = messagesREST(prefix).NOT_INCREMENT;
     if (okResultOf === 'decrement') messageErr = messagesREST(prefix).NOT_DECREMENT;
