@@ -1,9 +1,9 @@
 export class StatusResult {
-  static ok = 'Ok';
-  static error = 'Error';
-  static notFound = 'NotFound';
-  static unauthorized = 'Unauthorized';
-  static needRedirect = 'NeedRedirect';
+  static ok = "Ok";
+  static error = "Error";
+  static notFound = "NotFound";
+  static unauthorized = "Unauthorized";
+  static needRedirect = "NeedRedirect";
 }
 
 export class StatusCode {
@@ -20,7 +20,6 @@ export class StatusCode {
   // static PartialContent = 206;
   // static MultiStatus = 207;
 
-
   static MultipleChoices = 300;
   static MovedPermanently = 301;
   static MovedTemporarily = 302;
@@ -29,7 +28,6 @@ export class StatusCode {
   // static NotModified = 304;
   static TemporaryRedirect = 307;
   // static PermanentRedirect = 308;
-
 
   static BadRequest = 400;
   static Unauthorized = 401;
@@ -89,19 +87,19 @@ interface TResultIn {
 }
 
 interface TFuncParams {
-  statusCode?: StatusCode,
-  statusResult?: StatusResult,
-  message?: string,
-  error?: TError,
-  data?: TData,
-  count?: TCount,
+  statusCode?: StatusCode;
+  statusResult?: StatusResult;
+  message?: string;
+  error?: TError;
+  data?: TData;
+  count?: TCount;
   redirectTo?: TRedirectTo;
   bodyWrap?: boolean;
 }
 
 export class ResponseBodyVO {
   statusResult: StatusResult = StatusResult.ok;
-  message: string = '';
+  message: string = "";
   data: TData = null;
   count: TCount = null;
   error: TError = null;
@@ -110,11 +108,10 @@ export class ResponseBodyVO {
 
 export class ResponseVO {
   statusCode: StatusCode = StatusCode.OK;
-  body: string = '';
+  body: string = "";
 }
 
-export type ResponseVoAWS = ResponseVO | ResponseBodyVO
-
+export type ResponseVoAWS = ResponseVO | ResponseBodyVO;
 
 class Result {
   private statusCode: StatusCode;
@@ -127,18 +124,18 @@ class Result {
   private bodyWrap: boolean;
 
   constructor({
-                statusCode = StatusCode.OK,
-                statusResult = StatusResult.ok,
-                message,
-                data = null,
-                count = null,
-                error = null,
-                redirectTo = undefined,
-                bodyWrap = true,
-              }: TResultIn) {
+    statusCode = StatusCode.OK,
+    statusResult = StatusResult.ok,
+    message,
+    data = null,
+    count = null,
+    error = null,
+    redirectTo = undefined,
+    bodyWrap = true,
+  }: TResultIn) {
     this.statusCode = statusCode;
     this.statusResult = statusResult;
-    this.message = !message ? '' : message;
+    this.message = !message ? "" : message;
     this.count = count;
     this.data = data;
     this.error = error;
@@ -151,7 +148,12 @@ class Result {
    * If use to AWS Appsync need response value without body wrap
    */
   bodyToString(): ResponseVoAWS {
-    let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error);
+    let _err =
+      this.error && this.error.message
+        ? this.error.message
+        : !this.error
+        ? null
+        : JSON.stringify(this.error);
 
     const valueBody: ResponseBodyVO = {
       statusResult: this.statusResult,
@@ -171,7 +173,6 @@ class Result {
 }
 
 export class CreateResponse {
-
   /**
    * Success
    * @param data
@@ -180,11 +181,11 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static success({
-                   data = null,
-                   count = null,
-                   message = 'success',
-                   bodyWrap = true,
-                 }: TFuncParams): ResponseVoAWS {
+    data = null,
+    count = null,
+    message = "success",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -203,10 +204,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static created({
-                   data,
-                   message = 'created',
-                   bodyWrap = true,
-                 }: TFuncParams): ResponseVoAWS {
+    data,
+    message = "created",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
@@ -224,10 +225,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static updated({
-                   data,
-                   message = 'updated',
-                   bodyWrap = true,
-                 }: TFuncParams): ResponseVoAWS {
+    data,
+    message = "updated",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -245,10 +246,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static updateOrCreate({
-                   data,
-                   message = 'update_or_create',
-                   bodyWrap = true,
-                 }: TFuncParams): ResponseVoAWS {
+    data,
+    message = "update_or_create",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -266,10 +267,10 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static notFound({
-                    error = null,
-                    message = '',
-                    bodyWrap = true,
-                  }: TFuncParams): ResponseVoAWS {
+    error = null,
+    message = "",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.NotFound,
       statusResult: StatusResult.notFound,
@@ -289,11 +290,11 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static error({
-                 error = null,
-                 statusCode = StatusCode.BadRequest,
-                 message = 'Error',
-                 bodyWrap = true,
-               }: TFuncParams): ResponseVoAWS {
+    error = null,
+    statusCode = StatusCode.BadRequest,
+    message = "Error",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.error,
@@ -305,7 +306,6 @@ export class CreateResponse {
     return result.bodyToString();
   }
 
-
   /**
    * Unauthorized
    * @param error
@@ -314,11 +314,11 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static unauthorized({
-                        error = null,
-                        statusCode = StatusCode.Unauthorized,
-                        message = 'Unauthorized',
-                        bodyWrap = true,
-                      }: TFuncParams): ResponseVoAWS {
+    error = null,
+    statusCode = StatusCode.Unauthorized,
+    message = "Unauthorized",
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.unauthorized,
@@ -330,7 +330,6 @@ export class CreateResponse {
     return result.bodyToString();
   }
 
-
   /**
    * Redirect
    * @param error
@@ -339,11 +338,11 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static redirect({
-                    statusCode = StatusCode.MovedTemporarily,
-                    message = '',
-                    bodyWrap = true,
-                    redirectTo = ''
-                  }: TFuncParams): ResponseVoAWS {
+    statusCode = StatusCode.MovedTemporarily,
+    message = "",
+    bodyWrap = true,
+    redirectTo = "",
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.needRedirect,
@@ -367,14 +366,14 @@ export class CreateResponse {
    * @param bodyWrap
    */
   static custom({
-                  statusCode = StatusCode.OK,
-                  statusResult = StatusResult.ok,
-                  message = '',
-                  error = null,
-                  data = null,
-                  count = null,
-                  bodyWrap = true,
-                }: TFuncParams): ResponseVoAWS {
+    statusCode = StatusCode.OK,
+    statusResult = StatusResult.ok,
+    message = "",
+    error = null,
+    data = null,
+    count = null,
+    bodyWrap = true,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
       statusResult,
@@ -388,7 +387,7 @@ export class CreateResponse {
   }
 }
 
-export const messagesREST = (prefix: string, suffix: string = '') => {
+export const messagesREST = (prefix: string, suffix: string = "") => {
   return {
     TOTAL: `${prefix}_TOTAL${suffix}`,
 
@@ -399,6 +398,10 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
     AUTHORISED: `${prefix}_AUTHORISED${suffix}`,
     UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
     ERROR_AUTHORISED: `${prefix}_ERROR_AUTHORISED${suffix}`,
+
+    EXIST: `${prefix}_EXIST${suffix}`,
+    NOT_EXIST: `${prefix}_NOT_EXIST${suffix}`,
+    ERROR_EXIST: `${prefix}_ERROR_EXIST${suffix}`,
 
     IDENTIFIER: `${prefix}_IDENTIFIER${suffix}`,
     NOT_IDENTIFIER: `${prefix}_NOT_IDENTIFIER${suffix}`,
@@ -498,9 +501,9 @@ export const messagesREST = (prefix: string, suffix: string = '') => {
   };
 };
 
-export const optionsPaginationParams = ['limit', 'skip', 'count'];
+export const optionsPaginationParams = ["limit", "skip", "count"];
 
-export type TMongoFilterNormalise = { [fieldName: string]: any }
+export type TMongoFilterNormalise = { [fieldName: string]: any };
 
 /**
  * Normalise filter for mongoose
@@ -508,18 +511,32 @@ export type TMongoFilterNormalise = { [fieldName: string]: any }
  * @param filter
  * @param excludeFields
  */
-export const normaliseMongoFilter = (filter: TMongoFilterNormalise, regexFields: string[], excludeFields?: string[]) => {
+export const normaliseMongoFilter = (
+  filter: TMongoFilterNormalise,
+  regexFields: string[],
+  excludeFields?: string[]
+) => {
   const _filter: TMongoFilterNormalise = {};
-  const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields :
-    optionsPaginationParams;
+  const excludeParams =
+    excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0
+      ? excludeFields
+      : optionsPaginationParams;
 
   Object.keys(filter).forEach((f) => {
     const v = filter[f];
-    if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined ||
-      excludeParams.includes(f))) {
+    if (
+      !(
+        v === null ||
+        (typeof v === "number" && isNaN(v)) ||
+        v === Infinity ||
+        v === undefined ||
+        excludeParams.includes(f)
+      )
+    ) {
       _filter[f] = filter[f];
 
-      if (regexFields.includes(f)) _filter[f] = {$regex: new RegExp(_filter[f], 'gi')};
+      if (regexFields.includes(f))
+        _filter[f] = { $regex: new RegExp(_filter[f], "gi") };
     }
   });
 
@@ -531,11 +548,36 @@ export interface TMongoPaginate {
   limit: number;
 }
 
+export type TFieldsGQL =
+  | "create"
+  | "count"
+
+  | "find"
+  | "findOne"
+  | "findMany"
+
+  | "findOneByID"
+  | "findManyByIDs"
+
+
+  | "update"
+  | "updateOneByID"
+  | "updateManyByIDs"
+
+  | "deleteOne"
+  | "deleteOneByID"
+  | "deleteManyByIDs"
+  
+  | "actionMark"
+  | "init";
+
 /**
  * Normalise Mongo Paginate params
  * @param filter
  */
-export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPaginate => {
+export const normaliseMongoPaginate = (
+  filter: TMongoFilterNormalise
+): TMongoPaginate => {
   let res: TMongoPaginate = {
     skip: 0,
     limit: 50,
@@ -547,11 +589,22 @@ export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPag
   return res;
 };
 
-export const controlResponseNull = (data: object, okResultOf: 'create' | 'update'| 'update_or_create' | 'update_many' | 'increment' | 'decrement', prefix: string, bodyWrap: boolean = true) => {
+export const controlResponseNull = (
+  data: object,
+  okResultOf:
+    | "create"
+    | "update"
+    | "update_or_create"
+    | "update_many"
+    | "increment"
+    | "decrement",
+  prefix: string,
+  bodyWrap: boolean = true
+) => {
   let result;
 
   if (data) {
-    if (okResultOf === 'create') {
+    if (okResultOf === "create") {
       result = CreateResponse.created({
         data,
         message: messagesREST(prefix).CREATE,
@@ -559,7 +612,7 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       });
     }
 
-    if (okResultOf === 'update') {
+    if (okResultOf === "update") {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).UPDATE,
@@ -567,7 +620,7 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       });
     }
 
-    if (okResultOf === 'update_or_create') {
+    if (okResultOf === "update_or_create") {
       result = CreateResponse.updateOrCreate({
         data,
         message: messagesREST(prefix).UPDATE_OR_CREATE,
@@ -575,7 +628,7 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       });
     }
 
-    if (okResultOf === 'update_many') {
+    if (okResultOf === "update_many") {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).UPDATE_MANY,
@@ -583,7 +636,7 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       });
     }
 
-    if (okResultOf === 'increment') {
+    if (okResultOf === "increment") {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).INCREMENT,
@@ -591,22 +644,25 @@ export const controlResponseNull = (data: object, okResultOf: 'create' | 'update
       });
     }
 
-    if (okResultOf === 'decrement') {
+    if (okResultOf === "decrement") {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).DECREMENT,
         bodyWrap,
       });
     }
-
   } else {
-    let messageErr = '';
-    if (okResultOf === 'create') messageErr = messagesREST(prefix).NOT_CREATE;
-    if (okResultOf === 'update') messageErr = messagesREST(prefix).NOT_UPDATE;
-    if (okResultOf === 'update_or_create') messageErr = messagesREST(prefix).NOT_UPDATE_OR_CREATE;
-    if (okResultOf === 'update_many') messageErr = messagesREST(prefix).NOT_UPDATE_MANY;
-    if (okResultOf === 'increment') messageErr = messagesREST(prefix).NOT_INCREMENT;
-    if (okResultOf === 'decrement') messageErr = messagesREST(prefix).NOT_DECREMENT;
+    let messageErr = "";
+    if (okResultOf === "create") messageErr = messagesREST(prefix).NOT_CREATE;
+    if (okResultOf === "update") messageErr = messagesREST(prefix).NOT_UPDATE;
+    if (okResultOf === "update_or_create")
+      messageErr = messagesREST(prefix).NOT_UPDATE_OR_CREATE;
+    if (okResultOf === "update_many")
+      messageErr = messagesREST(prefix).NOT_UPDATE_MANY;
+    if (okResultOf === "increment")
+      messageErr = messagesREST(prefix).NOT_INCREMENT;
+    if (okResultOf === "decrement")
+      messageErr = messagesREST(prefix).NOT_DECREMENT;
 
     result = CreateResponse.error({
       data: data,

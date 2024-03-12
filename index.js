@@ -4,11 +4,11 @@ exports.controlResponseNull = exports.normaliseMongoPaginate = exports.normalise
 class StatusResult {
 }
 exports.StatusResult = StatusResult;
-StatusResult.ok = 'Ok';
-StatusResult.error = 'Error';
-StatusResult.notFound = 'NotFound';
-StatusResult.unauthorized = 'Unauthorized';
-StatusResult.needRedirect = 'NeedRedirect';
+StatusResult.ok = "Ok";
+StatusResult.error = "Error";
+StatusResult.notFound = "NotFound";
+StatusResult.unauthorized = "Unauthorized";
+StatusResult.needRedirect = "NeedRedirect";
 class StatusCode {
 }
 exports.StatusCode = StatusCode;
@@ -64,7 +64,7 @@ StatusCode.BadGateway = 502;
 class ResponseBodyVO {
     constructor() {
         this.statusResult = StatusResult.ok;
-        this.message = '';
+        this.message = "";
         this.data = null;
         this.count = null;
         this.error = null;
@@ -75,7 +75,7 @@ exports.ResponseBodyVO = ResponseBodyVO;
 class ResponseVO {
     constructor() {
         this.statusCode = StatusCode.OK;
-        this.body = '';
+        this.body = "";
     }
 }
 exports.ResponseVO = ResponseVO;
@@ -83,7 +83,7 @@ class Result {
     constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, redirectTo = undefined, bodyWrap = true, }) {
         this.statusCode = statusCode;
         this.statusResult = statusResult;
-        this.message = !message ? '' : message;
+        this.message = !message ? "" : message;
         this.count = count;
         this.data = data;
         this.error = error;
@@ -95,7 +95,11 @@ class Result {
      * If use to AWS Appsync need response value without body wrap
      */
     bodyToString() {
-        let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error);
+        let _err = this.error && this.error.message
+            ? this.error.message
+            : !this.error
+                ? null
+                : JSON.stringify(this.error);
         const valueBody = {
             statusResult: this.statusResult,
             message: this.message,
@@ -120,7 +124,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static success({ data = null, count = null, message = 'success', bodyWrap = true, }) {
+    static success({ data = null, count = null, message = "success", bodyWrap = true, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -137,7 +141,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static created({ data, message = 'created', bodyWrap = true, }) {
+    static created({ data, message = "created", bodyWrap = true, }) {
         const result = new Result({
             statusCode: StatusCode.Created,
             statusResult: StatusResult.ok,
@@ -153,7 +157,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updated({ data, message = 'updated', bodyWrap = true, }) {
+    static updated({ data, message = "updated", bodyWrap = true, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -169,7 +173,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updateOrCreate({ data, message = 'update_or_create', bodyWrap = true, }) {
+    static updateOrCreate({ data, message = "update_or_create", bodyWrap = true, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -185,7 +189,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static notFound({ error = null, message = '', bodyWrap = true, }) {
+    static notFound({ error = null, message = "", bodyWrap = true, }) {
         const result = new Result({
             statusCode: StatusCode.NotFound,
             statusResult: StatusResult.notFound,
@@ -203,7 +207,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static error({ error = null, statusCode = StatusCode.BadRequest, message = 'Error', bodyWrap = true, }) {
+    static error({ error = null, statusCode = StatusCode.BadRequest, message = "Error", bodyWrap = true, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.error,
@@ -221,7 +225,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = 'Unauthorized', bodyWrap = true, }) {
+    static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = "Unauthorized", bodyWrap = true, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.unauthorized,
@@ -239,7 +243,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, redirectTo = '' }) {
+    static redirect({ statusCode = StatusCode.MovedTemporarily, message = "", bodyWrap = true, redirectTo = "", }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.needRedirect,
@@ -261,7 +265,7 @@ class CreateResponse {
      * @param count
      * @param bodyWrap
      */
-    static custom({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message = '', error = null, data = null, count = null, bodyWrap = true, }) {
+    static custom({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message = "", error = null, data = null, count = null, bodyWrap = true, }) {
         const result = new Result({
             statusCode,
             statusResult,
@@ -275,7 +279,7 @@ class CreateResponse {
     }
 }
 exports.CreateResponse = CreateResponse;
-const messagesREST = (prefix, suffix = '') => {
+const messagesREST = (prefix, suffix = "") => {
     return {
         TOTAL: `${prefix}_TOTAL${suffix}`,
         NOT_FOUND: `${prefix}_NOT_FOUND${suffix}`,
@@ -283,6 +287,9 @@ const messagesREST = (prefix, suffix = '') => {
         AUTHORISED: `${prefix}_AUTHORISED${suffix}`,
         UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
         ERROR_AUTHORISED: `${prefix}_ERROR_AUTHORISED${suffix}`,
+        EXIST: `${prefix}_EXIST${suffix}`,
+        NOT_EXIST: `${prefix}_NOT_EXIST${suffix}`,
+        ERROR_EXIST: `${prefix}_ERROR_EXIST${suffix}`,
         IDENTIFIER: `${prefix}_IDENTIFIER${suffix}`,
         NOT_IDENTIFIER: `${prefix}_NOT_IDENTIFIER${suffix}`,
         ERROR_IDENTIFIER: `${prefix}_ERROR_IDENTIFIER${suffix}`,
@@ -358,7 +365,7 @@ const messagesREST = (prefix, suffix = '') => {
     };
 };
 exports.messagesREST = messagesREST;
-exports.optionsPaginationParams = ['limit', 'skip', 'count'];
+exports.optionsPaginationParams = ["limit", "skip", "count"];
 /**
  * Normalise filter for mongoose
  * @param regexFields
@@ -367,15 +374,19 @@ exports.optionsPaginationParams = ['limit', 'skip', 'count'];
  */
 const normaliseMongoFilter = (filter, regexFields, excludeFields) => {
     const _filter = {};
-    const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields :
-        exports.optionsPaginationParams;
+    const excludeParams = excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0
+        ? excludeFields
+        : exports.optionsPaginationParams;
     Object.keys(filter).forEach((f) => {
         const v = filter[f];
-        if (!(v === null || (typeof v === 'number' && isNaN(v)) || v === Infinity || v === undefined ||
+        if (!(v === null ||
+            (typeof v === "number" && isNaN(v)) ||
+            v === Infinity ||
+            v === undefined ||
             excludeParams.includes(f))) {
             _filter[f] = filter[f];
             if (regexFields.includes(f))
-                _filter[f] = { $regex: new RegExp(_filter[f], 'gi') };
+                _filter[f] = { $regex: new RegExp(_filter[f], "gi") };
         }
     });
     return _filter;
@@ -398,42 +409,42 @@ exports.normaliseMongoPaginate = normaliseMongoPaginate;
 const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
     let result;
     if (data) {
-        if (okResultOf === 'create') {
+        if (okResultOf === "create") {
             result = CreateResponse.created({
                 data,
                 message: (0, exports.messagesREST)(prefix).CREATE,
                 bodyWrap,
             });
         }
-        if (okResultOf === 'update') {
+        if (okResultOf === "update") {
             result = CreateResponse.updated({
                 data,
                 message: (0, exports.messagesREST)(prefix).UPDATE,
                 bodyWrap,
             });
         }
-        if (okResultOf === 'update_or_create') {
+        if (okResultOf === "update_or_create") {
             result = CreateResponse.updateOrCreate({
                 data,
                 message: (0, exports.messagesREST)(prefix).UPDATE_OR_CREATE,
                 bodyWrap,
             });
         }
-        if (okResultOf === 'update_many') {
+        if (okResultOf === "update_many") {
             result = CreateResponse.updated({
                 data,
                 message: (0, exports.messagesREST)(prefix).UPDATE_MANY,
                 bodyWrap,
             });
         }
-        if (okResultOf === 'increment') {
+        if (okResultOf === "increment") {
             result = CreateResponse.updated({
                 data,
                 message: (0, exports.messagesREST)(prefix).INCREMENT,
                 bodyWrap,
             });
         }
-        if (okResultOf === 'decrement') {
+        if (okResultOf === "decrement") {
             result = CreateResponse.updated({
                 data,
                 message: (0, exports.messagesREST)(prefix).DECREMENT,
@@ -442,18 +453,18 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
         }
     }
     else {
-        let messageErr = '';
-        if (okResultOf === 'create')
+        let messageErr = "";
+        if (okResultOf === "create")
             messageErr = (0, exports.messagesREST)(prefix).NOT_CREATE;
-        if (okResultOf === 'update')
+        if (okResultOf === "update")
             messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE;
-        if (okResultOf === 'update_or_create')
+        if (okResultOf === "update_or_create")
             messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE_OR_CREATE;
-        if (okResultOf === 'update_many')
+        if (okResultOf === "update_many")
             messageErr = (0, exports.messagesREST)(prefix).NOT_UPDATE_MANY;
-        if (okResultOf === 'increment')
+        if (okResultOf === "increment")
             messageErr = (0, exports.messagesREST)(prefix).NOT_INCREMENT;
-        if (okResultOf === 'decrement')
+        if (okResultOf === "decrement")
             messageErr = (0, exports.messagesREST)(prefix).NOT_DECREMENT;
         result = CreateResponse.error({
             data: data,
