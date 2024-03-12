@@ -568,7 +568,9 @@ export type TFieldsGQL =
   | "deleteOneByID"
   | "deleteManyByIDs"
   
-  | "actionMark"
+  | "actionMarkByIDs"
+  | "deleteMarkByIDs"
+  | "systemMarkByIDs"
   | "init";
 
 /**
