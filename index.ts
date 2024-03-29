@@ -387,7 +387,7 @@ export class CreateResponse {
   }
 }
 
-export const messagesREST = (prefix: string, suffix: string = "") => {
+export const messagesREST = (prefix: string, suffix: string = ""): Record<string, string> => {
   return {
     TOTAL: `${prefix}_TOTAL${suffix}`,
 
@@ -558,7 +558,6 @@ export type TFieldsGQL =
 
   | "findOneByID"
   | "findManyByIDs"
-
 
   | "update"
   | "updateOneByID"
