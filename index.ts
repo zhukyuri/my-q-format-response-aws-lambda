@@ -498,7 +498,19 @@ export const messagesREST = (prefix: string, suffix: string = ""): Record<string
     USER_AUTHENTICATION_REFRESH: `${prefix}_USER_AUTHENTICATION_REFRESH${suffix}`,
     NOT_USER_AUTHENTICATION_REFRESH: `${prefix}_NOT_USER_AUTHENTICATION_REFRESH${suffix}`,
     ERROR_USER_AUTHENTICATION_REFRESH: `${prefix}_ERROR_USER_AUTHENTICATION_REFRESH${suffix}`,
-  };
+  
+    MARK_ACTION: `${prefix}_MARK_ACTION${suffix}`,
+    NOT_MARK_ACTION: `${prefix}_NOT_MARK_ACTION${suffix}`,
+    ERROR_MARK_ACTION: `${prefix}_ERROR_MARK_ACTION${suffix}`,
+  
+    MARK_FOR_DELETE: `${prefix}_MARK_FOR_DELETE${suffix}`,
+    NOT_MARK_FOR_DELETE: `${prefix}_NOT_MARK_FOR_DELETE${suffix}`,
+    ERROR_MARK_FOR_DELETE: `${prefix}_ERROR_MARK_FOR_DELETE${suffix}`,
+  
+    MARK_SYSTEM: `${prefix}_MARK_SYSTEM${suffix}`,
+    NOT_MARK_SYSTEM: `${prefix}_NOT_MARK_SYSTEM${suffix}`,
+    ERROR_MARK_SYSTEM: `${prefix}_ERROR_MARK_SYSTEM${suffix}`,
+};
 };
 
 export const optionsPaginationParams = ["limit", "skip", "count"];
@@ -567,10 +579,12 @@ export type TFieldsGQL =
   | "deleteOneByID"
   | "deleteManyByIDs"
   
-  | "activeMarkByIDs"
-  | "deleteMarkByIDs"
-  | "systemMarkByIDs"
+  | "markActiveByIDs"
+  | "markForDeleteByIDs"
+  | "markSystemByIDs"
+
   | "init";
+
 
 /**
  * Normalise Mongo Paginate params
