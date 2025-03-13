@@ -1,6 +1,6 @@
 {
   "name": "my-q-format-response-aws-lambda",
-  "version": "1.0.48",
+  "version": "1.0.50",
   "homepage": "https://github.com/zhukyuri/my-q-format-response-aws-lambda",
   "description": "my-q-format-response-aws-lambda",
   "main": "index.js",
@@ -11,6 +11,7 @@
     "prepare": "npm run build",
     "version": "git add .",
     "postversion": "git push && git push --tags",
+    "login": "npm login",
     "publish": "npm publish"
   },
   "author": "zhukyuri",

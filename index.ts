@@ -417,9 +417,13 @@ export const messagesREST = (prefix: string, suffix: string = ''): Record<string
     ERROR_UPDATE_OR_CREATE: `${prefix}_ITEM_UPDATE_OR_CREATE${suffix}`,
     NOT_UPDATE_OR_CREATE: `${prefix}_ITEM_NOT_UPDATE_OR_CREATE${suffix}`,
 
-    UPDATE_MANY: `${prefix}_ITEM_UPDATE_MANY${suffix}`,
-    NOT_UPDATE_MANY: `${prefix}_ITEM_NOT_UPDATE_MANY${suffix}`,
-    ERROR_UPDATE_MANY: `${prefix}_ITEM_ERROR_UPDATE_MANY${suffix}`,
+    UPDATE_MANY: `${prefix}_UPDATE_MANY${suffix}`,
+    NOT_UPDATE_MANY: `${prefix}_NOT_UPDATE_MANY${suffix}`,
+    ERROR_UPDATE_MANY: `${prefix}_ERROR_UPDATE_MANY${suffix}`,
+
+    UPDATE_MANY_AND_GET_MANY: `${prefix}_UPDATE_MANY_AND_GET_MANY${suffix}`,
+    NOT_UPDATE_MANY_AND_GET_MANY: `${prefix}_NOT_UPDATE_MANY_AND_GET_MANY${suffix}`,
+    ERROR_UPDATE_MANY_AND_GET_MANY: `${prefix}_ERROR_UPDATE_MANY_AND_GET_MANY${suffix}`,
 
     GET_ONE_AND_CHILDREN: `${prefix}_GET_ONE_AND_CHILDREN${suffix}`,
     NOT_GET_ONE_AND_CHILDREN: `${prefix}_NOT_GET_ONE_AND_CHILDREN${suffix}`,
