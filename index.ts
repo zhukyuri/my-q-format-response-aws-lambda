@@ -1,9 +1,9 @@
 export class StatusResult {
-  static ok = "Ok";
-  static error = "Error";
-  static notFound = "NotFound";
-  static unauthorized = "Unauthorized";
-  static needRedirect = "NeedRedirect";
+  static ok = 'Ok'
+  static error = 'Error'
+  static notFound = 'NotFound'
+  static unauthorized = 'Unauthorized'
+  static needRedirect = 'NeedRedirect'
 }
 
 export class StatusCode {
@@ -11,29 +11,29 @@ export class StatusCode {
   // static Continue = 100;
   // static Processing = 102;
 
-  static OK = 200;
-  static Created = 201;
-  static Accepted = 202;
-  static NonAuthoritativeInformation = 203;
-  static NoContent = 204;
+  static OK = 200
+  static Created = 201
+  static Accepted = 202
+  static NonAuthoritativeInformation = 203
+  static NoContent = 204
   // static ResetContent = 205;
   // static PartialContent = 206;
   // static MultiStatus = 207;
 
-  static MultipleChoices = 300;
-  static MovedPermanently = 301;
-  static MovedTemporarily = 302;
-  static SeeOther = 303;
+  static MultipleChoices = 300
+  static MovedPermanently = 301
+  static MovedTemporarily = 302
+  static SeeOther = 303
   // static UseProxy = 305;
   // static NotModified = 304;
-  static TemporaryRedirect = 307;
+  static TemporaryRedirect = 307
   // static PermanentRedirect = 308;
 
-  static BadRequest = 400;
-  static Unauthorized = 401;
-  static PaymentRequired = 402;
-  static NotFound = 404;
-  static Forbidden = 403;
+  static BadRequest = 400
+  static Unauthorized = 401
+  static PaymentRequired = 402
+  static NotFound = 404
+  static Forbidden = 403
   // static MethodNotAllowed = 405;
   // static ProxyAuthenticationRequired = 407;
   // static NotAcceptable = 406;
@@ -57,9 +57,9 @@ export class StatusCode {
   // static TooManyRequests = 429;
   // static RequestHeaderFieldsTooLarge = 431;
 
-  static InternalServerError = 500;
-  static NotImplemented = 501;
-  static BadGateway = 502;
+  static InternalServerError = 500
+  static NotImplemented = 501
+  static BadGateway = 502
   // static ServiceUnavailable = 503;
   // static GatewayTimeOut = 504;
   // static HTTPVersionNotSupported = 505;
@@ -70,58 +70,63 @@ export class StatusCode {
   // static NetworkAuthenticationRequire = 511;
 }
 
-type TData = object | boolean | string | null;
-type TCount = number | null;
-type TError = any | null;
-type TRedirectTo = string | undefined;
+type TData = object | boolean | string | null
+type TCount = number | null
+type TError = any | null
+type TInfo = any | null
+type TRedirectTo = string | undefined
 
 interface TResultIn {
-  statusCode?: StatusCode;
-  statusResult?: StatusResult;
-  message?: string;
-  data?: TData;
-  count?: TCount;
-  error?: TError;
-  redirectTo?: TRedirectTo;
-  bodyWrap: boolean;
+  statusCode?: StatusCode
+  statusResult?: StatusResult
+  message?: string
+  data?: TData
+  count?: TCount
+  error?: TError
+  info?: TInfo
+  redirectTo?: TRedirectTo
+  bodyWrap: boolean
 }
 
 interface TFuncParams {
-  statusCode?: StatusCode;
-  statusResult?: StatusResult;
-  message?: string;
-  error?: TError;
-  data?: TData;
-  count?: TCount;
-  redirectTo?: TRedirectTo;
-  bodyWrap?: boolean;
+  statusCode?: StatusCode
+  statusResult?: StatusResult
+  message?: string
+  error?: TError
+  info?: TInfo
+  data?: TData
+  count?: TCount
+  redirectTo?: TRedirectTo
+  bodyWrap?: boolean
 }
 
 export class ResponseBodyVO {
-  statusResult: StatusResult = StatusResult.ok;
-  message: string = "";
-  data: TData = null;
-  count: TCount = null;
-  error: TError = null;
-  redirectTo?: TRedirectTo = undefined;
+  statusResult: StatusResult = StatusResult.ok
+  message: string = ''
+  data: TData = null
+  count: TCount = null
+  error: TError = null
+  info: TInfo = null
+  redirectTo?: TRedirectTo = undefined
 }
 
 export class ResponseVO {
-  statusCode: StatusCode = StatusCode.OK;
-  body: string = "";
+  statusCode: StatusCode = StatusCode.OK
+  body: string = ''
 }
 
-export type ResponseVoAWS = ResponseVO | ResponseBodyVO;
+export type ResponseVoAWS = ResponseVO | ResponseBodyVO
 
 class Result {
-  private statusCode: StatusCode;
-  private statusResult: StatusResult;
-  private message: string;
-  private data: TData;
-  private count: TCount;
-  private error: any;
-  private redirectTo: TRedirectTo;
-  private bodyWrap: boolean;
+  private statusCode: StatusCode
+  private statusResult: StatusResult
+  private message: string
+  private data: TData
+  private count: TCount
+  private error: any
+  private info: any
+  private redirectTo: TRedirectTo
+  private bodyWrap: boolean
 
   constructor({
     statusCode = StatusCode.OK,
@@ -130,17 +135,19 @@ class Result {
     data = null,
     count = null,
     error = null,
+    info = null,
     redirectTo = undefined,
     bodyWrap = true,
   }: TResultIn) {
-    this.statusCode = statusCode;
-    this.statusResult = statusResult;
-    this.message = !message ? "" : message;
-    this.count = count;
-    this.data = data;
-    this.error = error;
-    this.redirectTo = redirectTo;
-    this.bodyWrap = bodyWrap;
+    this.statusCode = statusCode
+    this.statusResult = statusResult
+    this.message = !message ? '' : message
+    this.count = count
+    this.data = data
+    this.error = error
+    this.info = info
+    this.redirectTo = redirectTo
+    this.bodyWrap = bodyWrap
   }
 
   /**
@@ -148,12 +155,7 @@ class Result {
    * If use to AWS Appsync need response value without body wrap
    */
   bodyToString(): ResponseVoAWS {
-    let _err =
-      this.error && this.error.message
-        ? this.error.message
-        : !this.error
-        ? null
-        : JSON.stringify(this.error);
+    let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error)
 
     const valueBody: ResponseBodyVO = {
       statusResult: this.statusResult,
@@ -161,14 +163,15 @@ class Result {
       data: this.data,
       count: this.count,
       error: _err,
-    };
-    if (this.redirectTo) valueBody.redirectTo = this.redirectTo;
+      info: this.info,
+    }
+    if (this.redirectTo) valueBody.redirectTo = this.redirectTo
     const valueBodyWrap: ResponseVO = {
       statusCode: this.statusCode,
       body: JSON.stringify(valueBody),
-    };
+    }
 
-    return this.bodyWrap ? valueBodyWrap : valueBody;
+    return this.bodyWrap ? valueBodyWrap : valueBody
   }
 }
 
@@ -183,8 +186,9 @@ export class CreateResponse {
   static success({
     data = null,
     count = null,
-    message = "success",
+    message = 'success',
     bodyWrap = true,
+    info = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
@@ -193,8 +197,9 @@ export class CreateResponse {
       data,
       count,
       bodyWrap,
-    });
-    return result.bodyToString();
+      info,
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -203,19 +208,15 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static created({
-    data,
-    message = "created",
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+  static created({ data, message = 'created', bodyWrap = true }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
       message,
       data,
       bodyWrap,
-    });
-    return result.bodyToString();
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -224,19 +225,16 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static updated({
-    data,
-    message = "updated",
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+  static updated({ data, message = 'updated', bodyWrap = true, info = null }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
       message,
       data,
       bodyWrap,
-    });
-    return result.bodyToString();
+      info,
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -247,8 +245,9 @@ export class CreateResponse {
    */
   static updateOrCreate({
     data,
-    message = "update_or_create",
+    message = 'update_or_create',
     bodyWrap = true,
+    info = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
@@ -256,8 +255,9 @@ export class CreateResponse {
       message,
       data,
       bodyWrap,
-    });
-    return result.bodyToString();
+      info,
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -266,11 +266,7 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static notFound({
-    error = null,
-    message = "",
-    bodyWrap = true,
-  }: TFuncParams): ResponseVoAWS {
+  static notFound({ error = null, message = '', bodyWrap = true }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.NotFound,
       statusResult: StatusResult.notFound,
@@ -278,8 +274,8 @@ export class CreateResponse {
       data: null,
       error,
       bodyWrap,
-    });
-    return result.bodyToString();
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -292,7 +288,7 @@ export class CreateResponse {
   static error({
     error = null,
     statusCode = StatusCode.BadRequest,
-    message = "Error",
+    message = 'Error',
     bodyWrap = true,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
@@ -302,8 +298,8 @@ export class CreateResponse {
       error,
       message,
       bodyWrap,
-    });
-    return result.bodyToString();
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -316,7 +312,7 @@ export class CreateResponse {
   static unauthorized({
     error = null,
     statusCode = StatusCode.Unauthorized,
-    message = "Unauthorized",
+    message = 'Unauthorized',
     bodyWrap = true,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
@@ -326,8 +322,8 @@ export class CreateResponse {
       error,
       message,
       bodyWrap,
-    });
-    return result.bodyToString();
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -339,9 +335,9 @@ export class CreateResponse {
    */
   static redirect({
     statusCode = StatusCode.MovedTemporarily,
-    message = "",
+    message = '',
     bodyWrap = true,
-    redirectTo = "",
+    redirectTo = '',
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -351,8 +347,8 @@ export class CreateResponse {
       message,
       redirectTo,
       bodyWrap,
-    });
-    return result.bodyToString();
+    })
+    return result.bodyToString()
   }
 
   /**
@@ -368,11 +364,12 @@ export class CreateResponse {
   static custom({
     statusCode = StatusCode.OK,
     statusResult = StatusResult.ok,
-    message = "",
+    message = '',
     error = null,
     data = null,
     count = null,
     bodyWrap = true,
+    info = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -382,12 +379,13 @@ export class CreateResponse {
       data,
       count,
       bodyWrap,
-    });
-    return result.bodyToString();
+      info
+    })
+    return result.bodyToString()
   }
 }
 
-export const messagesREST = (prefix: string, suffix: string = ""): Record<string, string> => {
+export const messagesREST = (prefix: string, suffix: string = ''): Record<string, string> => {
   return {
     TOTAL: `${prefix}_TOTAL${suffix}`,
 
@@ -498,24 +496,24 @@ export const messagesREST = (prefix: string, suffix: string = ""): Record<string
     USER_AUTHENTICATION_REFRESH: `${prefix}_USER_AUTHENTICATION_REFRESH${suffix}`,
     NOT_USER_AUTHENTICATION_REFRESH: `${prefix}_NOT_USER_AUTHENTICATION_REFRESH${suffix}`,
     ERROR_USER_AUTHENTICATION_REFRESH: `${prefix}_ERROR_USER_AUTHENTICATION_REFRESH${suffix}`,
-  
+
     MARK_ACTION: `${prefix}_MARK_ACTION${suffix}`,
     NOT_MARK_ACTION: `${prefix}_NOT_MARK_ACTION${suffix}`,
     ERROR_MARK_ACTION: `${prefix}_ERROR_MARK_ACTION${suffix}`,
-  
+
     MARK_FOR_DELETE: `${prefix}_MARK_FOR_DELETE${suffix}`,
     NOT_MARK_FOR_DELETE: `${prefix}_NOT_MARK_FOR_DELETE${suffix}`,
     ERROR_MARK_FOR_DELETE: `${prefix}_ERROR_MARK_FOR_DELETE${suffix}`,
-  
+
     MARK_SYSTEM: `${prefix}_MARK_SYSTEM${suffix}`,
     NOT_MARK_SYSTEM: `${prefix}_NOT_MARK_SYSTEM${suffix}`,
     ERROR_MARK_SYSTEM: `${prefix}_ERROR_MARK_SYSTEM${suffix}`,
-};
-};
+  }
+}
 
-export const optionsPaginationParams = ["limit", "skip", "count"];
+export const optionsPaginationParams = ['limit', 'skip', 'count']
 
-export type TMongoFilterNormalise = { [fieldName: string]: any };
+export type TMongoFilterNormalise = { [fieldName: string]: any }
 
 /**
  * Normalise filter for mongoose
@@ -528,163 +526,141 @@ export const normaliseMongoFilter = (
   regexFields: string[],
   excludeFields?: string[]
 ) => {
-  const _filter: TMongoFilterNormalise = {};
+  const _filter: TMongoFilterNormalise = {}
   const excludeParams =
-    excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0
-      ? excludeFields
-      : optionsPaginationParams;
+    excludeFields && Array.isArray(excludeFields) && excludeFields.length > 0 ? excludeFields : optionsPaginationParams
 
   Object.keys(filter).forEach((f) => {
-    const v = filter[f];
+    const v = filter[f]
     if (
       !(
         v === null ||
-        (typeof v === "number" && isNaN(v)) ||
+        (typeof v === 'number' && isNaN(v)) ||
         v === Infinity ||
         v === undefined ||
         excludeParams.includes(f)
       )
     ) {
-      _filter[f] = filter[f];
+      _filter[f] = filter[f]
 
-      if (regexFields.includes(f))
-        _filter[f] = { $regex: new RegExp(_filter[f], "gi") };
+      if (regexFields.includes(f)) _filter[f] = { $regex: new RegExp(_filter[f], 'gi') }
     }
-  });
+  })
 
-  return _filter;
-};
+  return _filter
+}
 
 export interface TMongoPaginate {
-  skip: number;
-  limit: number;
+  skip: number
+  limit: number
 }
 
 export type TFieldsGQL =
-  | "create"
-  | "count"
-
-  | "find"
-  | "findOne"
-  | "findMany"
-
-  | "findOneByID"
-  | "findManyByIDs"
-
-  | "update"
-  | "updateOneByID"
-  | "updateManyByIDs"
-
-  | "deleteOne"
-  | "deleteOneByID"
-  | "deleteManyByIDs"
-  
-  | "markActiveByIDs"
-  | "markForDeleteByIDs"
-  | "markSystemByIDs"
-
-  | "init";
-
+  | 'create'
+  | 'count'
+  | 'find'
+  | 'findOne'
+  | 'findMany'
+  | 'findOneByID'
+  | 'findManyByIDs'
+  | 'update'
+  | 'updateOneByID'
+  | 'updateManyByIDs'
+  | 'deleteOne'
+  | 'deleteOneByID'
+  | 'deleteManyByIDs'
+  | 'markActiveByIDs'
+  | 'markForDeleteByIDs'
+  | 'markSystemByIDs'
+  | 'init'
 
 /**
  * Normalise Mongo Paginate params
  * @param filter
  */
-export const normaliseMongoPaginate = (
-  filter: TMongoFilterNormalise
-): TMongoPaginate => {
+export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPaginate => {
   let res: TMongoPaginate = {
     skip: 0,
     limit: 50,
-  };
+  }
 
-  res.skip = filter && filter.skip ? parseInt(filter.skip, 10) || 0 : 0;
-  res.limit = filter && filter.limit ? parseInt(filter.limit, 10) || 50 : 50;
+  res.skip = filter && filter.skip ? parseInt(filter.skip, 10) || 0 : 0
+  res.limit = filter && filter.limit ? parseInt(filter.limit, 10) || 50 : 50
 
-  return res;
-};
+  return res
+}
 
 export const controlResponseNull = (
   data: object,
-  okResultOf:
-    | "create"
-    | "update"
-    | "update_or_create"
-    | "update_many"
-    | "increment"
-    | "decrement",
+  okResultOf: 'create' | 'update' | 'update_or_create' | 'update_many' | 'increment' | 'decrement',
   prefix: string,
   bodyWrap: boolean = true
 ) => {
-  let result;
+  let result
 
   if (data) {
-    if (okResultOf === "create") {
+    if (okResultOf === 'create') {
       result = CreateResponse.created({
         data,
         message: messagesREST(prefix).CREATE,
         bodyWrap,
-      });
+      })
     }
 
-    if (okResultOf === "update") {
+    if (okResultOf === 'update') {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).UPDATE,
         bodyWrap,
-      });
+      })
     }
 
-    if (okResultOf === "update_or_create") {
+    if (okResultOf === 'update_or_create') {
       result = CreateResponse.updateOrCreate({
         data,
         message: messagesREST(prefix).UPDATE_OR_CREATE,
         bodyWrap,
-      });
+      })
     }
 
-    if (okResultOf === "update_many") {
+    if (okResultOf === 'update_many') {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).UPDATE_MANY,
         bodyWrap,
-      });
+      })
     }
 
-    if (okResultOf === "increment") {
+    if (okResultOf === 'increment') {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).INCREMENT,
         bodyWrap,
-      });
+      })
     }
 
-    if (okResultOf === "decrement") {
+    if (okResultOf === 'decrement') {
       result = CreateResponse.updated({
         data,
         message: messagesREST(prefix).DECREMENT,
         bodyWrap,
-      });
+      })
     }
   } else {
-    let messageErr = "";
-    if (okResultOf === "create") messageErr = messagesREST(prefix).NOT_CREATE;
-    if (okResultOf === "update") messageErr = messagesREST(prefix).NOT_UPDATE;
-    if (okResultOf === "update_or_create")
-      messageErr = messagesREST(prefix).NOT_UPDATE_OR_CREATE;
-    if (okResultOf === "update_many")
-      messageErr = messagesREST(prefix).NOT_UPDATE_MANY;
-    if (okResultOf === "increment")
-      messageErr = messagesREST(prefix).NOT_INCREMENT;
-    if (okResultOf === "decrement")
-      messageErr = messagesREST(prefix).NOT_DECREMENT;
+    let messageErr = ''
+    if (okResultOf === 'create') messageErr = messagesREST(prefix).NOT_CREATE
+    if (okResultOf === 'update') messageErr = messagesREST(prefix).NOT_UPDATE
+    if (okResultOf === 'update_or_create') messageErr = messagesREST(prefix).NOT_UPDATE_OR_CREATE
+    if (okResultOf === 'update_many') messageErr = messagesREST(prefix).NOT_UPDATE_MANY
+    if (okResultOf === 'increment') messageErr = messagesREST(prefix).NOT_INCREMENT
+    if (okResultOf === 'decrement') messageErr = messagesREST(prefix).NOT_DECREMENT
 
     result = CreateResponse.error({
       data: data,
       message: messageErr,
       bodyWrap,
-    });
+    })
   }
 
-  return result;
-};
+  return result
+}
