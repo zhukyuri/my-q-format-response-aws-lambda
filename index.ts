@@ -669,8 +669,8 @@ export const controlResponseNull = (
   return result
 }
 
-export const parseMessageResponse =(message: string, separetor: string = '__'): string[]   => {
-  let res = message.split(separetor)
+export const parseMessageResponse =(message: string, separator: string = '__'): string[]   => {
+  let res = message.split(separator)
   if(res.length < 2) return ['', '', '']
 
   return res
