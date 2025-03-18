@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.controlResponseNull = exports.normaliseMongoPaginate = exports.normaliseMongoFilter = exports.optionsPaginationParams = exports.messagesREST = exports.CreateResponse = exports.ResponseVO = exports.ResponseBodyVO = exports.StatusCode = exports.StatusResult = void 0;
+exports.parseMessageResponse = exports.controlResponseNull = exports.normaliseMongoPaginate = exports.normaliseMongoFilter = exports.optionsPaginationParams = exports.messagesREST = exports.CreateResponse = exports.ResponseVO = exports.ResponseBodyVO = exports.StatusCode = exports.StatusResult = void 0;
 class StatusResult {
 }
 exports.StatusResult = StatusResult;
@@ -488,3 +488,10 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
     return result;
 };
 exports.controlResponseNull = controlResponseNull;
+const parseMessageResponse = (message, separetor = '__') => {
+    let res = message.split(separetor);
+    if (res.length < 2)
+        return ['', '', ''];
+    return res;
+};
+exports.parseMessageResponse = parseMessageResponse;
