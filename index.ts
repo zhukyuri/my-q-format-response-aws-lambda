@@ -74,6 +74,7 @@ type TData = object | boolean | string | null
 type TCount = number | null
 type TError = any | null
 type TInfo = any | null
+type TIdentity = any | null
 type TRedirectTo = string | undefined
 
 interface TResultIn {
@@ -84,6 +85,7 @@ interface TResultIn {
   count?: TCount
   error?: TError
   info?: TInfo
+  identity?: TIdentity
   redirectTo?: TRedirectTo
   bodyWrap: boolean
 }
@@ -94,6 +96,7 @@ interface TFuncParams {
   message?: string
   error?: TError
   info?: TInfo
+  identity?: TIdentity
   data?: TData
   count?: TCount
   redirectTo?: TRedirectTo
@@ -107,6 +110,7 @@ export class ResponseBodyVO {
   count: TCount = null
   error: TError = null
   info: TInfo = null
+  identity: TIdentity = null
   redirectTo?: TRedirectTo = undefined
 }
 
@@ -125,6 +129,7 @@ class Result {
   private count: TCount
   private error: any
   private info: any
+  private identity: any
   private redirectTo: TRedirectTo
   private bodyWrap: boolean
 
@@ -136,6 +141,7 @@ class Result {
     count = null,
     error = null,
     info = null,
+    identity = null,
     redirectTo = undefined,
     bodyWrap = true,
   }: TResultIn) {
@@ -146,6 +152,7 @@ class Result {
     this.data = data
     this.error = error
     this.info = info
+    this.identity = identity
     this.redirectTo = redirectTo
     this.bodyWrap = bodyWrap
   }
@@ -164,6 +171,7 @@ class Result {
       count: this.count,
       error: _err,
       info: this.info,
+      identity: this.identity,
     }
     if (this.redirectTo) valueBody.redirectTo = this.redirectTo
     const valueBodyWrap: ResponseVO = {
@@ -189,6 +197,7 @@ export class CreateResponse {
     message = 'success',
     bodyWrap = true,
     info = null,
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
@@ -198,6 +207,7 @@ export class CreateResponse {
       count,
       bodyWrap,
       info,
+      identity,
     })
     return result.bodyToString()
   }
@@ -208,13 +218,15 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static created({ data, message = 'created', bodyWrap = true }: TFuncParams): ResponseVoAWS {
+  static created({ data, message = 'created', bodyWrap = true, info = null, identity = null }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
       message,
       data,
       bodyWrap,
+      info,
+      identity,
     })
     return result.bodyToString()
   }
@@ -225,7 +237,7 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static updated({ data, message = 'updated', bodyWrap = true, info = null }: TFuncParams): ResponseVoAWS {
+  static updated({ data, message = 'updated', bodyWrap = true, info = null, identity = null }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -233,6 +245,7 @@ export class CreateResponse {
       data,
       bodyWrap,
       info,
+      identity,
     })
     return result.bodyToString()
   }
@@ -248,6 +261,7 @@ export class CreateResponse {
     message = 'update_or_create',
     bodyWrap = true,
     info = null,
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
@@ -256,6 +270,7 @@ export class CreateResponse {
       data,
       bodyWrap,
       info,
+      identity,
     })
     return result.bodyToString()
   }
@@ -266,7 +281,7 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static notFound({ error = null, message = '', bodyWrap = true }: TFuncParams): ResponseVoAWS {
+  static notFound({ error = null, message = '', bodyWrap = true, identity = null }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.NotFound,
       statusResult: StatusResult.notFound,
@@ -274,6 +289,7 @@ export class CreateResponse {
       data: null,
       error,
       bodyWrap,
+      identity,
     })
     return result.bodyToString()
   }
@@ -290,6 +306,7 @@ export class CreateResponse {
     statusCode = StatusCode.BadRequest,
     message = 'Error',
     bodyWrap = true,
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -298,6 +315,7 @@ export class CreateResponse {
       error,
       message,
       bodyWrap,
+      identity,
     })
     return result.bodyToString()
   }
@@ -314,6 +332,7 @@ export class CreateResponse {
     statusCode = StatusCode.Unauthorized,
     message = 'Unauthorized',
     bodyWrap = true,
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -322,6 +341,7 @@ export class CreateResponse {
       error,
       message,
       bodyWrap,
+      identity,
     })
     return result.bodyToString()
   }
@@ -338,6 +358,7 @@ export class CreateResponse {
     message = '',
     bodyWrap = true,
     redirectTo = '',
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -347,6 +368,7 @@ export class CreateResponse {
       message,
       redirectTo,
       bodyWrap,
+      identity,
     })
     return result.bodyToString()
   }
@@ -370,6 +392,7 @@ export class CreateResponse {
     count = null,
     bodyWrap = true,
     info = null,
+    identity = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode,
@@ -379,7 +402,8 @@ export class CreateResponse {
       data,
       count,
       bodyWrap,
-      info
+      info,
+      identity,
     })
     return result.bodyToString()
   }
@@ -598,7 +622,8 @@ export const controlResponseNull = (
   data: object,
   okResultOf: 'create' | 'update' | 'update_or_create' | 'update_many' | 'increment' | 'decrement',
   prefix: string,
-  bodyWrap: boolean = true
+  bodyWrap: boolean = true,
+  identity: string | null = null
 ) => {
   let result
 
@@ -608,6 +633,7 @@ export const controlResponseNull = (
         data,
         message: messagesREST(prefix).CREATE,
         bodyWrap,
+        identity,
       })
     }
 
@@ -616,6 +642,7 @@ export const controlResponseNull = (
         data,
         message: messagesREST(prefix).UPDATE,
         bodyWrap,
+        identity,
       })
     }
 
@@ -632,6 +659,7 @@ export const controlResponseNull = (
         data,
         message: messagesREST(prefix).UPDATE_MANY,
         bodyWrap,
+        identity,
       })
     }
 
@@ -640,6 +668,7 @@ export const controlResponseNull = (
         data,
         message: messagesREST(prefix).INCREMENT,
         bodyWrap,
+        identity,
       })
     }
 
@@ -648,6 +677,7 @@ export const controlResponseNull = (
         data,
         message: messagesREST(prefix).DECREMENT,
         bodyWrap,
+        identity,
       })
     }
   } else {
@@ -663,6 +693,7 @@ export const controlResponseNull = (
       data: data,
       message: messageErr,
       bodyWrap,
+      identity,
     })
   }
 

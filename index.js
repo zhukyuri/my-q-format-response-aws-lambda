@@ -69,6 +69,7 @@ class ResponseBodyVO {
         this.count = null;
         this.error = null;
         this.info = null;
+        this.identity = null;
         this.redirectTo = undefined;
     }
 }
@@ -81,7 +82,7 @@ class ResponseVO {
 }
 exports.ResponseVO = ResponseVO;
 class Result {
-    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, info = null, redirectTo = undefined, bodyWrap = true, }) {
+    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, info = null, identity = null, redirectTo = undefined, bodyWrap = true, }) {
         this.statusCode = statusCode;
         this.statusResult = statusResult;
         this.message = !message ? '' : message;
@@ -89,6 +90,7 @@ class Result {
         this.data = data;
         this.error = error;
         this.info = info;
+        this.identity = identity;
         this.redirectTo = redirectTo;
         this.bodyWrap = bodyWrap;
     }
@@ -105,6 +107,7 @@ class Result {
             count: this.count,
             error: _err,
             info: this.info,
+            identity: this.identity,
         };
         if (this.redirectTo)
             valueBody.redirectTo = this.redirectTo;
@@ -123,7 +126,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static success({ data = null, count = null, message = 'success', bodyWrap = true, info = null, }) {
+    static success({ data = null, count = null, message = 'success', bodyWrap = true, info = null, identity = null, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -132,6 +135,7 @@ class CreateResponse {
             count,
             bodyWrap,
             info,
+            identity,
         });
         return result.bodyToString();
     }
@@ -141,13 +145,15 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static created({ data, message = 'created', bodyWrap = true }) {
+    static created({ data, message = 'created', bodyWrap = true, info = null, identity = null }) {
         const result = new Result({
             statusCode: StatusCode.Created,
             statusResult: StatusResult.ok,
             message,
             data,
             bodyWrap,
+            info,
+            identity,
         });
         return result.bodyToString();
     }
@@ -157,7 +163,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updated({ data, message = 'updated', bodyWrap = true, info = null }) {
+    static updated({ data, message = 'updated', bodyWrap = true, info = null, identity = null }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -165,6 +171,7 @@ class CreateResponse {
             data,
             bodyWrap,
             info,
+            identity,
         });
         return result.bodyToString();
     }
@@ -174,7 +181,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updateOrCreate({ data, message = 'update_or_create', bodyWrap = true, info = null, }) {
+    static updateOrCreate({ data, message = 'update_or_create', bodyWrap = true, info = null, identity = null, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -182,6 +189,7 @@ class CreateResponse {
             data,
             bodyWrap,
             info,
+            identity,
         });
         return result.bodyToString();
     }
@@ -191,7 +199,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static notFound({ error = null, message = '', bodyWrap = true }) {
+    static notFound({ error = null, message = '', bodyWrap = true, identity = null }) {
         const result = new Result({
             statusCode: StatusCode.NotFound,
             statusResult: StatusResult.notFound,
@@ -199,6 +207,7 @@ class CreateResponse {
             data: null,
             error,
             bodyWrap,
+            identity,
         });
         return result.bodyToString();
     }
@@ -209,7 +218,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static error({ error = null, statusCode = StatusCode.BadRequest, message = 'Error', bodyWrap = true, }) {
+    static error({ error = null, statusCode = StatusCode.BadRequest, message = 'Error', bodyWrap = true, identity = null, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.error,
@@ -217,6 +226,7 @@ class CreateResponse {
             error,
             message,
             bodyWrap,
+            identity,
         });
         return result.bodyToString();
     }
@@ -227,7 +237,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = 'Unauthorized', bodyWrap = true, }) {
+    static unauthorized({ error = null, statusCode = StatusCode.Unauthorized, message = 'Unauthorized', bodyWrap = true, identity = null, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.unauthorized,
@@ -235,6 +245,7 @@ class CreateResponse {
             error,
             message,
             bodyWrap,
+            identity,
         });
         return result.bodyToString();
     }
@@ -245,7 +256,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, redirectTo = '', }) {
+    static redirect({ statusCode = StatusCode.MovedTemporarily, message = '', bodyWrap = true, redirectTo = '', identity = null, }) {
         const result = new Result({
             statusCode,
             statusResult: StatusResult.needRedirect,
@@ -254,6 +265,7 @@ class CreateResponse {
             message,
             redirectTo,
             bodyWrap,
+            identity,
         });
         return result.bodyToString();
     }
@@ -267,7 +279,7 @@ class CreateResponse {
      * @param count
      * @param bodyWrap
      */
-    static custom({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message = '', error = null, data = null, count = null, bodyWrap = true, info = null, }) {
+    static custom({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message = '', error = null, data = null, count = null, bodyWrap = true, info = null, identity = null, }) {
         const result = new Result({
             statusCode,
             statusResult,
@@ -276,7 +288,8 @@ class CreateResponse {
             data,
             count,
             bodyWrap,
-            info
+            info,
+            identity,
         });
         return result.bodyToString();
     }
@@ -419,7 +432,7 @@ const normaliseMongoPaginate = (filter) => {
     return res;
 };
 exports.normaliseMongoPaginate = normaliseMongoPaginate;
-const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
+const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true, identity = null) => {
     let result;
     if (data) {
         if (okResultOf === 'create') {
@@ -427,6 +440,7 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 data,
                 message: (0, exports.messagesREST)(prefix).CREATE,
                 bodyWrap,
+                identity,
             });
         }
         if (okResultOf === 'update') {
@@ -434,6 +448,7 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 data,
                 message: (0, exports.messagesREST)(prefix).UPDATE,
                 bodyWrap,
+                identity,
             });
         }
         if (okResultOf === 'update_or_create') {
@@ -448,6 +463,7 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 data,
                 message: (0, exports.messagesREST)(prefix).UPDATE_MANY,
                 bodyWrap,
+                identity,
             });
         }
         if (okResultOf === 'increment') {
@@ -455,6 +471,7 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 data,
                 message: (0, exports.messagesREST)(prefix).INCREMENT,
                 bodyWrap,
+                identity,
             });
         }
         if (okResultOf === 'decrement') {
@@ -462,6 +479,7 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
                 data,
                 message: (0, exports.messagesREST)(prefix).DECREMENT,
                 bodyWrap,
+                identity,
             });
         }
     }
@@ -483,13 +501,14 @@ const controlResponseNull = (data, okResultOf, prefix, bodyWrap = true) => {
             data: data,
             message: messageErr,
             bodyWrap,
+            identity,
         });
     }
     return result;
 };
 exports.controlResponseNull = controlResponseNull;
-const parseMessageResponse = (message, separetor = '__') => {
-    let res = message.split(separetor);
+const parseMessageResponse = (message, separator = '__') => {
+    let res = message.split(separator);
     if (res.length < 2)
         return ['', '', ''];
     return res;
