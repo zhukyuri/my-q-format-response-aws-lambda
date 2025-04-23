@@ -469,6 +469,10 @@ export const messagesREST = (prefix: string, suffix: string = ''): Record<string
     NOT_GET_MANY_AND_COUNT: `${prefix}_NOT_GET_MANY_AND_COUNT${suffix}`,
     ERROR_GET_MANY_AND_COUNT: `${prefix}_ERROR_GET_MANY_AND_COUNT${suffix}`,
 
+    GET_LIST_AND_COUNT: `${prefix}_GET_LIST_AND_COUNT${suffix}`,
+    NOT_GET_LIST_AND_COUNT: `${prefix}_NOT_GET_LIST_AND_COUNT${suffix}`,
+    ERROR_GET_LIST_AND_COUNT: `${prefix}_ERROR_GET_LIST_AND_COUNT${suffix}`,
+
     GET_COUNT: `${prefix}_GET_COUNT${suffix}`,
     NOT_GET_COUNT: `${prefix}_NOT_GET_COUNT${suffix}`,
     ERROR_GET_COUNT: `${prefix}_ERROR_GET_COUNT${suffix}`,
