@@ -145,7 +145,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static created({ data, message = 'created', bodyWrap = true, info = null, identity = null }) {
+    static created({ data, message = 'created', bodyWrap = true, info = null, identity = null, }) {
         const result = new Result({
             statusCode: StatusCode.Created,
             statusResult: StatusResult.ok,
@@ -163,7 +163,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static updated({ data, message = 'updated', bodyWrap = true, info = null, identity = null }) {
+    static updated({ data, message = 'updated', bodyWrap = true, info = null, identity = null, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,

@@ -218,7 +218,13 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static created({ data, message = 'created', bodyWrap = true, info = null, identity = null }: TFuncParams): ResponseVoAWS {
+  static created({
+    data,
+    message = 'created',
+    bodyWrap = true,
+    info = null,
+    identity = null,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
@@ -237,7 +243,13 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static updated({ data, message = 'updated', bodyWrap = true, info = null, identity = null }: TFuncParams): ResponseVoAWS {
+  static updated({
+    data,
+    message = 'updated',
+    bodyWrap = true,
+    info = null,
+    identity = null,
+  }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -710,9 +722,68 @@ export const controlResponseNull = (
   return result
 }
 
-export const parseMessageResponse =(message: string, separator: string = '__'): string[]   => {
+export const parseMessageResponse = (message: string, separator: string = '__'): string[] => {
   let res = message.split(separator)
-  if(res.length < 2) return ['', '', '']
+  if (res.length < 2) return ['', '', '']
 
   return res
 }
+
+// **************************************************************************************
+// **********************     ENTITY INPUT TYPES    *************************************
+// **************************************************************************************
+
+// CREATE
+export interface TEntityInputCreate<M> {
+  data: M
+}
+
+// GET LIST
+export interface TEntityInputGetList<F, S> {
+  filter: F
+  sort: S
+  withCount: boolean
+  paging: TMongoPaginate
+}
+
+// GET ONE BY ID
+export interface TEntityInputGetOneByID {
+  id: string
+}
+
+// GET MANY BY IDs
+export interface TEntityInputGetManyByIDs {
+  ids: string[]
+}
+
+// UPDATE ONE BY ID
+export interface TEntityInputUpdateOneByID<M> {
+  id: string
+  data: M
+}
+
+// UPDATE MANY BY IDs
+export interface TEntityInputUpdateManyByIDs<M> {
+  ids: string[]
+  data: M
+}
+
+// DELETE ONE BY ID
+export interface TEntityInputDeleteOneByID {
+  id: string
+}
+
+// DELETE MANY BY IDs
+export interface TEntityInputDeleteManyByIDs {
+  ids: string[]
+}
+
+export type TEntityInput =
+  | TEntityInputCreate<any>
+  | TEntityInputGetList<any, any>
+  | TEntityInputGetOneByID
+  | TEntityInputGetManyByIDs
+  | TEntityInputUpdateOneByID<any>
+  | TEntityInputUpdateManyByIDs<any>
+  | TEntityInputDeleteOneByID
+  | TEntityInputDeleteManyByIDs
