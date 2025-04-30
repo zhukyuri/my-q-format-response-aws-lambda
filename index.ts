@@ -733,6 +733,9 @@ export const parseMessageResponse = (message: string, separator: string = '__'):
 // **********************     ENTITY INPUT TYPES    *************************************
 // **************************************************************************************
 
+type TID = string
+type TIDs = string[]
+
 // CREATE
 export interface TEntityInputCreate<M> {
   values: M
@@ -748,23 +751,23 @@ export interface TEntityInputGetList<F, S> {
 
 // ONE BY ID
 export interface TEntityInputOneByID {
-  id: string
+  id: TID
 }
 
 // MANY BY IDs
 export interface TEntityInputManyByIDs {
-  ids: string[]
+  ids: TIDs
 }
 
 // VALUES ONE BY ID
 export interface TEntityInputValuesOneByID<M> {
-  id: string
+  id: TID
   values: M
 }
 
 // VALUES MANY BY IDs
 export interface TEntityInputValuesManyByIDs<M> {
-  ids: string[]
+  ids: TIDs
   values: M
 }
 

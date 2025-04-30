@@ -1,6 +1,6 @@
 {
   "name": "my-q-format-response-aws-lambda",
-  "version": "1.0.59",
+  "version": "1.0.60",
   "homepage": "https://github.com/zhukyuri/my-q-format-response-aws-lambda",
   "description": "my-q-format-response-aws-lambda",
   "main": "index.js",
