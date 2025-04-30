@@ -735,7 +735,7 @@ export const parseMessageResponse = (message: string, separator: string = '__'):
 
 // CREATE
 export interface TEntityInputCreate<M> {
-  data: M
+  values: M
 }
 
 // GET LIST
@@ -746,44 +746,32 @@ export interface TEntityInputGetList<F, S> {
   paging: TMongoPaginate
 }
 
-// GET ONE BY ID
-export interface TEntityInputGetOneByID {
+// ONE BY ID
+export interface TEntityInputOneByID {
   id: string
 }
 
-// GET MANY BY IDs
-export interface TEntityInputGetManyByIDs {
+// MANY BY IDs
+export interface TEntityInputManyByIDs {
   ids: string[]
 }
 
-// UPDATE ONE BY ID
-export interface TEntityInputUpdateOneByID<M> {
+// VALUES ONE BY ID
+export interface TEntityInputValuesOneByID<M> {
   id: string
-  data: M
+  values: M
 }
 
-// UPDATE MANY BY IDs
-export interface TEntityInputUpdateManyByIDs<M> {
+// VALUES MANY BY IDs
+export interface TEntityInputValuesManyByIDs<M> {
   ids: string[]
-  data: M
-}
-
-// DELETE ONE BY ID
-export interface TEntityInputDeleteOneByID {
-  id: string
-}
-
-// DELETE MANY BY IDs
-export interface TEntityInputDeleteManyByIDs {
-  ids: string[]
+  values: M
 }
 
 export type TEntityInput =
   | TEntityInputCreate<any>
   | TEntityInputGetList<any, any>
-  | TEntityInputGetOneByID
-  | TEntityInputGetManyByIDs
-  | TEntityInputUpdateOneByID<any>
-  | TEntityInputUpdateManyByIDs<any>
-  | TEntityInputDeleteOneByID
-  | TEntityInputDeleteManyByIDs
+  | TEntityInputOneByID
+  | TEntityInputValuesOneByID<any>
+  | TEntityInputManyByIDs
+  | TEntityInputValuesManyByIDs<any>
