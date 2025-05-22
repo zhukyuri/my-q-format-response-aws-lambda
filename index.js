@@ -430,12 +430,13 @@ exports.normaliseMongoFilter = normaliseMongoFilter;
  * @param filter
  */
 const normaliseMongoPaginate = (filter) => {
-    let res = {
-        skip: 0,
-        limit: 50,
-    };
-    res.skip = filter && filter.skip ? parseInt(filter.skip, 10) || 0 : 0;
-    res.limit = filter && filter.limit ? parseInt(filter.limit, 10) || 50 : 50;
+    let res = {};
+    if (filter.hasOwnProperty('limit') && filter.hasOwnProperty('skip')) {
+        res = {
+            skip: filter.skip ? parseInt(filter.skip, 10) : 0,
+            limit: filter.limit ? parseInt(filter.limit, 10) : 50,
+        };
+    }
     return res;
 };
 exports.normaliseMongoPaginate = normaliseMongoPaginate;

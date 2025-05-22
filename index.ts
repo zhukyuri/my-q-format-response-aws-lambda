@@ -600,10 +600,12 @@ export const normaliseMongoFilter = (
   return _filter
 }
 
-export interface TMongoPaginate {
-  skip: number
-  limit: number
-}
+export type TMongoPaginate =
+  | {
+      skip: number
+      limit: number
+    }
+  | {}
 
 export type TFieldsGQL =
   | 'create'
@@ -629,13 +631,14 @@ export type TFieldsGQL =
  * @param filter
  */
 export const normaliseMongoPaginate = (filter: TMongoFilterNormalise): TMongoPaginate => {
-  let res: TMongoPaginate = {
-    skip: 0,
-    limit: 50,
-  }
+  let res: TMongoPaginate = {}
 
-  res.skip = filter && filter.skip ? parseInt(filter.skip, 10) || 0 : 0
-  res.limit = filter && filter.limit ? parseInt(filter.limit, 10) || 50 : 50
+  if (filter.hasOwnProperty('limit') && filter.hasOwnProperty('skip')) {
+    res = {
+      skip: filter.skip ? parseInt(filter.skip, 10) : 0,
+      limit: filter.limit ? parseInt(filter.limit, 10) : 50,
+    }
+  }
 
   return res
 }
