@@ -535,6 +535,10 @@ export const messagesREST = (prefix: string, suffix: string = ''): Record<string
     NOT_USER_REGISTRATION: `${prefix}_NOT_USER_REGISTRATION${suffix}`,
     ERROR_USER_REGISTRATION: `${prefix}_ERROR_USER_REGISTRATION${suffix}`,
 
+    USER_ALREADY_REGISTERED: `${prefix}_USER_ALREADY_REGISTERED${suffix}`,
+    USER_DID_NOT_REGISTER: `${prefix}_USER_DID_NOT_REGISTER${suffix}`,
+    ERROR_USER_ALREADY_REGISTERED: `${prefix}_ERROR_USER_ALREADY_REGISTERED${suffix}`,
+
     USER_LOGIN: `${prefix}_USER_LOGIN${suffix}`,
     NOT_USER_LOGIN: `${prefix}_NOT_USER_LOGIN${suffix}`,
     ERROR_USER_LOGIN: `${prefix}_ERROR_USER_LOGIN${suffix}`,
