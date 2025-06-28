@@ -71,6 +71,7 @@ class ResponseBodyVO {
         this.info = null;
         this.identity = null;
         this.redirectTo = undefined;
+        this.token = null;
     }
 }
 exports.ResponseBodyVO = ResponseBodyVO;
@@ -82,7 +83,7 @@ class ResponseVO {
 }
 exports.ResponseVO = ResponseVO;
 class Result {
-    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, info = null, identity = null, redirectTo = undefined, bodyWrap = true, }) {
+    constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, info = null, identity = null, redirectTo = undefined, token = null, bodyWrap = true, }) {
         this.statusCode = statusCode;
         this.statusResult = statusResult;
         this.message = !message ? '' : message;
@@ -92,6 +93,7 @@ class Result {
         this.info = info;
         this.identity = identity;
         this.redirectTo = redirectTo;
+        this.token = token;
         this.bodyWrap = bodyWrap;
     }
     /**
@@ -108,6 +110,7 @@ class Result {
             error: _err,
             info: this.info,
             identity: this.identity,
+            token: this.token,
         };
         if (this.redirectTo)
             valueBody.redirectTo = this.redirectTo;
@@ -126,7 +129,7 @@ class CreateResponse {
      * @param message
      * @param bodyWrap
      */
-    static success({ data = null, count = null, message = 'success', bodyWrap = true, info = null, identity = null, }) {
+    static success({ data = null, count = null, message = 'success', bodyWrap = true, info = null, identity = null, token = null, }) {
         const result = new Result({
             statusCode: StatusCode.OK,
             statusResult: StatusResult.ok,
@@ -136,6 +139,7 @@ class CreateResponse {
             bodyWrap,
             info,
             identity,
+            token,
         });
         return result.bodyToString();
     }

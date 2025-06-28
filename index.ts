@@ -76,6 +76,7 @@ type TError = any | null
 type TInfo = any | null
 type TIdentity = any | null
 type TRedirectTo = string | undefined
+type TToken = string | null
 
 interface TResultIn {
   statusCode?: StatusCode
@@ -87,6 +88,7 @@ interface TResultIn {
   info?: TInfo
   identity?: TIdentity
   redirectTo?: TRedirectTo
+  token?: TToken
   bodyWrap: boolean
 }
 
@@ -100,6 +102,7 @@ interface TFuncParams {
   data?: TData
   count?: TCount
   redirectTo?: TRedirectTo
+  token?: TToken
   bodyWrap?: boolean
 }
 
@@ -112,6 +115,7 @@ export class ResponseBodyVO {
   info: TInfo = null
   identity: TIdentity = null
   redirectTo?: TRedirectTo = undefined
+  token?: TToken = null
 }
 
 export class ResponseVO {
@@ -131,6 +135,7 @@ class Result {
   private info: any
   private identity: any
   private redirectTo: TRedirectTo
+  private token: TToken
   private bodyWrap: boolean
 
   constructor({
@@ -143,6 +148,7 @@ class Result {
     info = null,
     identity = null,
     redirectTo = undefined,
+    token = null,
     bodyWrap = true,
   }: TResultIn) {
     this.statusCode = statusCode
@@ -154,6 +160,7 @@ class Result {
     this.info = info
     this.identity = identity
     this.redirectTo = redirectTo
+    this.token = token
     this.bodyWrap = bodyWrap
   }
 
@@ -172,6 +179,7 @@ class Result {
       error: _err,
       info: this.info,
       identity: this.identity,
+      token: this.token,
     }
     if (this.redirectTo) valueBody.redirectTo = this.redirectTo
     const valueBodyWrap: ResponseVO = {
@@ -198,6 +206,7 @@ export class CreateResponse {
     bodyWrap = true,
     info = null,
     identity = null,
+    token = null,
   }: TFuncParams): ResponseVoAWS {
     const result = new Result({
       statusCode: StatusCode.OK,
@@ -208,6 +217,7 @@ export class CreateResponse {
       bodyWrap,
       info,
       identity,
+      token,
     })
     return result.bodyToString()
   }
