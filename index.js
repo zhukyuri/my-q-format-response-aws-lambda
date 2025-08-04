@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseMessageResponse = exports.controlResponseNull = exports.normaliseMongoPaginate = exports.normaliseMongoFilter = exports.optionsPaginationParams = exports.messagesREST = exports.CreateResponse = exports.ResponseVO = exports.ResponseBodyVO = exports.StatusCode = exports.StatusResult = void 0;
+exports.parseMessageResponse = exports.controlResponseNull = exports.normaliseMongoPaginate = exports.normaliseMongoFilter = exports.optionsPaginationParams = exports.messagesREST = exports.CreateResponse = exports.bodyToString = exports.ResponseBodyJSON = exports.ResponseBodyVOFull = exports.ResponseBodyVO = exports.ResponseBodyVOBase = exports.StatusCode = exports.StatusResult = void 0;
 class StatusResult {
 }
 exports.StatusResult = StatusResult;
@@ -61,7 +61,7 @@ StatusCode.Forbidden = 403;
 StatusCode.InternalServerError = 500;
 StatusCode.NotImplemented = 501;
 StatusCode.BadGateway = 502;
-class ResponseBodyVO {
+class ResponseBodyVOBase {
     constructor() {
         this.statusResult = StatusResult.ok;
         this.message = '';
@@ -70,20 +70,35 @@ class ResponseBodyVO {
         this.error = null;
         this.info = null;
         this.identity = null;
+    }
+}
+exports.ResponseBodyVOBase = ResponseBodyVOBase;
+class ResponseBodyVO extends ResponseBodyVOBase {
+    constructor() {
+        super(...arguments);
         this.redirectTo = undefined;
         this.token = null;
+        this.bodyWrap = true;
     }
 }
 exports.ResponseBodyVO = ResponseBodyVO;
-class ResponseVO {
+class ResponseBodyVOFull extends ResponseBodyVO {
+    constructor() {
+        super(...arguments);
+        this.statusCode = StatusCode.OK;
+    }
+}
+exports.ResponseBodyVOFull = ResponseBodyVOFull;
+class ResponseBodyJSON {
     constructor() {
         this.statusCode = StatusCode.OK;
         this.body = '';
     }
 }
-exports.ResponseVO = ResponseVO;
-class Result {
+exports.ResponseBodyJSON = ResponseBodyJSON;
+class Result extends ResponseBodyVOFull {
     constructor({ statusCode = StatusCode.OK, statusResult = StatusResult.ok, message, data = null, count = null, error = null, info = null, identity = null, redirectTo = undefined, token = null, bodyWrap = true, }) {
+        super();
         this.statusCode = statusCode;
         this.statusResult = statusResult;
         this.message = !message ? '' : message;
@@ -96,31 +111,32 @@ class Result {
         this.token = token;
         this.bodyWrap = bodyWrap;
     }
-    /**
-     * Serverless: According to the API Gateway specs, the body content must be stringified
-     * If use to AWS Appsync need response value without body wrap
-     */
-    bodyToString() {
-        let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error);
-        const valueBody = {
-            statusResult: this.statusResult,
-            message: this.message,
-            data: this.data,
-            count: this.count,
-            error: _err,
-            info: this.info,
-            identity: this.identity,
-            token: this.token,
-        };
-        if (this.redirectTo)
-            valueBody.redirectTo = this.redirectTo;
-        const valueBodyWrap = {
-            statusCode: this.statusCode,
-            body: JSON.stringify(valueBody),
-        };
-        return this.bodyWrap ? valueBodyWrap : valueBody;
-    }
 }
+/**
+ * Serverless: According to the API Gateway specs, the body content must be stringified
+ * If use to AWS Appsync need response value without body wrap
+ */
+const bodyToString = (result) => {
+    let _err = result.error && result.error.message ? result.error.message : !result.error ? null : JSON.stringify(result.error);
+    const valueBody = {
+        statusResult: result.statusResult,
+        message: result.message,
+        data: result.data,
+        count: result.count,
+        error: _err,
+        info: result.info,
+        identity: result.identity,
+        token: result.token,
+    };
+    if (result.redirectTo)
+        valueBody.redirectTo = result.redirectTo;
+    const valueBodyWrap = {
+        statusCode: result.statusCode,
+        body: JSON.stringify(valueBody),
+    };
+    return result.bodyWrap ? valueBodyWrap : valueBody;
+};
+exports.bodyToString = bodyToString;
 class CreateResponse {
     /**
      * Success
@@ -141,7 +157,7 @@ class CreateResponse {
             identity,
             token,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Created
@@ -159,7 +175,7 @@ class CreateResponse {
             info,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Update
@@ -177,7 +193,7 @@ class CreateResponse {
             info,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Update or Create
@@ -195,7 +211,7 @@ class CreateResponse {
             info,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Not Found
@@ -213,7 +229,7 @@ class CreateResponse {
             bodyWrap,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Error
@@ -232,7 +248,7 @@ class CreateResponse {
             bodyWrap,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Unauthorized
@@ -251,7 +267,7 @@ class CreateResponse {
             bodyWrap,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Redirect
@@ -271,7 +287,7 @@ class CreateResponse {
             bodyWrap,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
     /**
      * Custom
@@ -295,7 +311,7 @@ class CreateResponse {
             info,
             identity,
         });
-        return result.bodyToString();
+        return result;
     }
 }
 exports.CreateResponse = CreateResponse;

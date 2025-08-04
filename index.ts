@@ -89,7 +89,7 @@ interface TResultIn {
   identity?: TIdentity
   redirectTo?: TRedirectTo
   token?: TToken
-  bodyWrap: boolean
+  bodyWrap?: boolean
 }
 
 interface TFuncParams {
@@ -106,7 +106,7 @@ interface TFuncParams {
   bodyWrap?: boolean
 }
 
-export class ResponseBodyVO {
+export class ResponseBodyVOBase {
   statusResult: StatusResult = StatusResult.ok
   message: string = ''
   data: TData = null
@@ -114,29 +114,26 @@ export class ResponseBodyVO {
   error: TError = null
   info: TInfo = null
   identity: TIdentity = null
-  redirectTo?: TRedirectTo = undefined
-  token?: TToken = null
 }
 
-export class ResponseVO {
-  statusCode: StatusCode = StatusCode.OK
+export class ResponseBodyVO extends ResponseBodyVOBase {
+  redirectTo?: TRedirectTo = undefined
+  token?: TToken = null
+  bodyWrap?: boolean = true
+}
+
+export class ResponseBodyVOFull extends ResponseBodyVO {
+  statusCode?: StatusCode = StatusCode.OK
+}
+
+export class ResponseBodyJSON {
+  statusCode?: StatusCode = StatusCode.OK
   body: string = ''
 }
 
-export type ResponseVoAWS = ResponseVO | ResponseBodyVO
+export type ResponseVoAWS = ResponseBodyJSON | ResponseBodyVO
 
-class Result {
-  private statusCode: StatusCode
-  private statusResult: StatusResult
-  private message: string
-  private data: TData
-  private count: TCount
-  private error: any
-  private info: any
-  private identity: any
-  private redirectTo: TRedirectTo
-  private token: TToken
-  private bodyWrap: boolean
+class Result extends ResponseBodyVOFull {
 
   constructor({
     statusCode = StatusCode.OK,
@@ -151,6 +148,7 @@ class Result {
     token = null,
     bodyWrap = true,
   }: TResultIn) {
+    super()
     this.statusCode = statusCode
     this.statusResult = statusResult
     this.message = !message ? '' : message
@@ -163,33 +161,35 @@ class Result {
     this.token = token
     this.bodyWrap = bodyWrap
   }
+}
+
 
   /**
    * Serverless: According to the API Gateway specs, the body content must be stringified
    * If use to AWS Appsync need response value without body wrap
    */
-  bodyToString(): ResponseVoAWS {
-    let _err = this.error && this.error.message ? this.error.message : !this.error ? null : JSON.stringify(this.error)
+  export const bodyToString = (result: ResponseBodyVOFull): ResponseVoAWS => {
+    let _err = result.error && result.error.message ? result.error.message : !result.error ? null : JSON.stringify(result.error)
 
-    const valueBody: ResponseBodyVO = {
-      statusResult: this.statusResult,
-      message: this.message,
-      data: this.data,
-      count: this.count,
+    const valueBody: ResponseBodyVOFull = {
+      statusResult: result.statusResult,
+      message: result.message,
+      data: result.data,
+      count: result.count,
       error: _err,
-      info: this.info,
-      identity: this.identity,
-      token: this.token,
+      info: result.info,
+      identity: result.identity,
+      token: result.token,
     }
-    if (this.redirectTo) valueBody.redirectTo = this.redirectTo
-    const valueBodyWrap: ResponseVO = {
-      statusCode: this.statusCode,
+    if (result.redirectTo) valueBody.redirectTo = result.redirectTo
+    const valueBodyWrap: ResponseBodyJSON = {
+      statusCode: result.statusCode,
       body: JSON.stringify(valueBody),
     }
 
-    return this.bodyWrap ? valueBodyWrap : valueBody
+    return result.bodyWrap ? valueBodyWrap : valueBody
   }
-}
+
 
 export class CreateResponse {
   /**
@@ -207,7 +207,7 @@ export class CreateResponse {
     info = null,
     identity = null,
     token = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -219,7 +219,7 @@ export class CreateResponse {
       identity,
       token,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -234,7 +234,7 @@ export class CreateResponse {
     bodyWrap = true,
     info = null,
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode: StatusCode.Created,
       statusResult: StatusResult.ok,
@@ -244,7 +244,7 @@ export class CreateResponse {
       info,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -259,7 +259,7 @@ export class CreateResponse {
     bodyWrap = true,
     info = null,
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -269,7 +269,7 @@ export class CreateResponse {
       info,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -284,7 +284,7 @@ export class CreateResponse {
     bodyWrap = true,
     info = null,
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode: StatusCode.OK,
       statusResult: StatusResult.ok,
@@ -294,7 +294,7 @@ export class CreateResponse {
       info,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -303,7 +303,7 @@ export class CreateResponse {
    * @param message
    * @param bodyWrap
    */
-  static notFound({ error = null, message = '', bodyWrap = true, identity = null }: TFuncParams): ResponseVoAWS {
+  static notFound({ error = null, message = '', bodyWrap = true, identity = null }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode: StatusCode.NotFound,
       statusResult: StatusResult.notFound,
@@ -313,7 +313,7 @@ export class CreateResponse {
       bodyWrap,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -329,7 +329,7 @@ export class CreateResponse {
     message = 'Error',
     bodyWrap = true,
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.error,
@@ -339,7 +339,7 @@ export class CreateResponse {
       bodyWrap,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -355,7 +355,7 @@ export class CreateResponse {
     message = 'Unauthorized',
     bodyWrap = true,
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.unauthorized,
@@ -365,7 +365,7 @@ export class CreateResponse {
       bodyWrap,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -381,7 +381,7 @@ export class CreateResponse {
     bodyWrap = true,
     redirectTo = '',
     identity = null,
-  }: TFuncParams): ResponseVoAWS {
+  }: TFuncParams): ResponseBodyVO {
     const result = new Result({
       statusCode,
       statusResult: StatusResult.needRedirect,
@@ -392,7 +392,7 @@ export class CreateResponse {
       bodyWrap,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 
   /**
@@ -427,7 +427,7 @@ export class CreateResponse {
       info,
       identity,
     })
-    return result.bodyToString()
+    return result
   }
 }
 
