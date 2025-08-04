@@ -134,7 +134,6 @@ export class ResponseBodyJSON {
 export type ResponseVoAWS = ResponseBodyJSON | ResponseBodyVO
 
 class Result extends ResponseBodyVOFull {
-
   constructor({
     statusCode = StatusCode.OK,
     statusResult = StatusResult.ok,
@@ -160,7 +159,7 @@ class Result extends ResponseBodyVOFull {
     this.redirectTo = redirectTo
     this.token = token
     this.bodyWrap = bodyWrap
-  }
+  } 
 }
 
 
@@ -218,7 +217,7 @@ export class CreateResponse {
       info,
       identity,
       token,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -243,7 +242,7 @@ export class CreateResponse {
       bodyWrap,
       info,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -268,7 +267,7 @@ export class CreateResponse {
       bodyWrap,
       info,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -293,7 +292,7 @@ export class CreateResponse {
       bodyWrap,
       info,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -312,7 +311,7 @@ export class CreateResponse {
       error,
       bodyWrap,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -338,7 +337,7 @@ export class CreateResponse {
       message,
       bodyWrap,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -364,7 +363,7 @@ export class CreateResponse {
       message,
       bodyWrap,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -391,7 +390,7 @@ export class CreateResponse {
       redirectTo,
       bodyWrap,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 
@@ -426,7 +425,7 @@ export class CreateResponse {
       bodyWrap,
       info,
       identity,
-    })
+    }) as ResponseBodyVOFull
     return result
   }
 }
