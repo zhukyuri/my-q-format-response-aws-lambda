@@ -576,7 +576,7 @@ export const messagesREST = (prefix: string, suffix: string = ''): Record<string
     NOT_GENERATE_PDF: `${prefix}_NOT_MGENERATE_PDF${suffix}`,
     ERROR_GENERATE_PDF: `${prefix}_ERROR_GENERATE_PDF${suffix}`,
 
-    GENERATE_XLS: `${prefix}_GENERATE_PDF${suffix}`,
+    GENERATE_XLS: `${prefix}_GENERATE_XLS${suffix}`,
     NOT_GENERATE_XLS: `${prefix}_NOT_MGENERATE_XLS${suffix}`,
     ERROR_GENERATE_XLS: `${prefix}_ERROR_GENERATE_XLS${suffix}`,
   }
