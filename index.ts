@@ -572,6 +572,21 @@ export const messagesREST = (prefix: string, suffix: string = ''): Record<string
     NOT_MARK_SYSTEM: `${prefix}_NOT_MARK_SYSTEM${suffix}`,
     ERROR_MARK_SYSTEM: `${prefix}_ERROR_MARK_SYSTEM${suffix}`,
 
+    // confirmation of the document.
+    ACC_DOCUMENT_CONFIRMATION: `${prefix}_ACC_DOCUMENT_CONFIRMATION${suffix}`,
+    NOT_ACC_DOCUMENT_CONFIRMATION: `${prefix}_NOT_ACC_DOCUMENT_CONFIRMATION${suffix}`,
+    ERROR_ACC_DOCUMENT_CONFIRMATION: `${prefix}_ERROR_ACC_DOCUMENT_CONFIRMATION${suffix}`,
+
+    // re-confirmation of the document.
+    ACC_DOCUMENT_RE_CONFIRMATION: `${prefix}_ACC_DOCUMENT_RE_CONFIRMATION${suffix}`,
+    NOT_ACC_DOCUMENT_RE_CONFIRMATION: `${prefix}_NOT_ACC_DOCUMENT_RE_CONFIRMATION${suffix}`,
+    ERROR_ACC_DOCUMENT_RE_CONFIRMATION: `${prefix}_ERROR_ACC_DOCUMENT_RE_CONFIRMATION${suffix}`,
+
+    // re-confirmation UNDO of the document.
+    ACC_DOCUMENT_RE_UNDO_CONFIRMATION: `${prefix}_ACC_DOCUMENT_RE_UNDO_CONFIRMATION${suffix}`,
+    NOT_ACC_DOCUMENT_RE_UNDO_CONFIRMATION: `${prefix}_NOT_ACC_DOCUMENT_RE_UNDO_CONFIRMATION${suffix}`,
+    ERROR_ACC_DOCUMENT_RE_UNDO_CONFIRMATION: `${prefix}_ERROR_ACC_DOCUMENT_RE_UNDO_CONFIRMATION${suffix}`,
+
     GENERATE_PDF: `${prefix}_GENERATE_PDF${suffix}`,
     NOT_GENERATE_PDF: `${prefix}_NOT_MGENERATE_PDF${suffix}`,
     ERROR_GENERATE_PDF: `${prefix}_ERROR_GENERATE_PDF${suffix}`,
