@@ -424,6 +424,10 @@ const messagesREST = (prefix, suffix = '') => {
         ACC_DOCUMENT_CONFIRMATION: `${prefix}_ACC_DOCUMENT_CONFIRMATION${suffix}`,
         NOT_ACC_DOCUMENT_CONFIRMATION: `${prefix}_NOT_ACC_DOCUMENT_CONFIRMATION${suffix}`,
         ERROR_ACC_DOCUMENT_CONFIRMATION: `${prefix}_ERROR_ACC_DOCUMENT_CONFIRMATION${suffix}`,
+        // confirmation of the document.
+        ACC_DOCUMENT_CONFIRMATION_UNDO: `${prefix}_ACC_DOCUMENT_CONFIRMATION__UNDO${suffix}`,
+        NOT_ACC_DOCUMENT_CONFIRMATION_UNDO: `${prefix}_NOT_ACC_DOCUMENT_CONFIRMATION${suffix}`,
+        ERROR_ACC_DOCUMENT_CONFIRMATION_UNDO: `${prefix}_ERROR_ACC_DOCUMENT_CONFIRMATION${suffix}`,
         // re-confirmation of the document.
         ACC_DOCUMENT_RE_CONFIRMATION: `${prefix}_ACC_DOCUMENT_RE_CONFIRMATION${suffix}`,
         NOT_ACC_DOCUMENT_RE_CONFIRMATION: `${prefix}_NOT_ACC_DOCUMENT_RE_CONFIRMATION${suffix}`,
