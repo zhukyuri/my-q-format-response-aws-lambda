@@ -552,6 +552,9 @@ export type TMessagesREST = {
   GENERATE_XLS: string
   NOT_GENERATE_XLS: string
   ERROR_GENERATE_XLS: string
+  MIXED_DATA: string
+  NOT_MIXED_DATA: string
+  ERROR_MIXED_DATA: string
 }
 
 export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST => {
@@ -723,6 +726,10 @@ export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST
     GENERATE_XLS: `${prefix}_GENERATE_XLS${suffix}`,
     NOT_GENERATE_XLS: `${prefix}_NOT_MGENERATE_XLS${suffix}`,
     ERROR_GENERATE_XLS: `${prefix}_ERROR_GENERATE_XLS${suffix}`,
+
+    MIXED_DATA: `${prefix}_MIXED_DATA${suffix}`,
+    NOT_MIXED_DATA: `${prefix}_NOT_MIXED_DATA${suffix}`,
+    ERROR_MIXED_DATA: `${prefix}_ERROR_MIXED_DATA${suffix}`,
   }
 }
 
