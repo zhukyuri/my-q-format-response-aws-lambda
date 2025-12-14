@@ -555,6 +555,9 @@ export type TMessagesREST = {
   MIXED_DATA: string
   NOT_MIXED_DATA: string
   ERROR_MIXED_DATA: string
+  ID_VALID: string
+  NOT_ID_VALID: string
+  ERROR_ID_VALID: string
 }
 
 export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST => {
@@ -566,6 +569,10 @@ export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST
     ROUTE_NOT_FOUND: `${prefix}_ROUTE_NOT_FOUND${suffix}`,
 
     TOKEN_EXPIRED_ERROR: `${prefix}_TOKEN_EXPIRED_ERROR${suffix}`,
+
+    ID_VALID: `${prefix}_ID_VALID${suffix}`,
+    NOT_ID_VALID: `${prefix}_NOT_ID_VALID${suffix}`,
+    ERROR_ID_VALID: `${prefix}_ERROR_ID_VALID${suffix}`,
 
     AUTHORISED: `${prefix}_AUTHORISED${suffix}`,
     UNAUTHORISED: `${prefix}_UNAUTHORISED${suffix}`,
