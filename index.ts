@@ -531,6 +531,9 @@ export type TMessagesREST = {
   USER_AUTHENTICATION_REFRESH: string
   NOT_USER_AUTHENTICATION_REFRESH: string
   ERROR_USER_AUTHENTICATION_REFRESH: string
+  ERROR_USER_NOT_FOUND: string
+  REGISTER_USER_SUCCESS: string
+  USER_REGISTRATION_ERROR: string
   MARK_ACTION: string
   NOT_MARK_ACTION: string
   ERROR_MARK_ACTION: string
@@ -564,6 +567,7 @@ export type TMessagesREST = {
   ID_VALID: string
   NOT_ID_VALID: string
   ERROR_ID_VALID: string
+  INTERNAL_SERVER_ERROR: string
 }
 
 export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST => {
@@ -708,6 +712,10 @@ export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST
     NOT_USER_AUTHENTICATION_REFRESH: `${prefix}_NOT_USER_AUTHENTICATION_REFRESH${suffix}`,
     ERROR_USER_AUTHENTICATION_REFRESH: `${prefix}_ERROR_USER_AUTHENTICATION_REFRESH${suffix}`,
 
+    ERROR_USER_NOT_FOUND: `${prefix}_ERROR_USER_NOT_FOUND${suffix}`,
+    REGISTER_USER_SUCCESS: `${prefix}_REGISTER_USER_SUCCESS${suffix}`,
+    USER_REGISTRATION_ERROR: `${prefix}_USER_REGISTRATION_ERROR${suffix}`,
+
     MARK_ACTION: `${prefix}_MARK_ACTION${suffix}`,
     NOT_MARK_ACTION: `${prefix}_NOT_MARK_ACTION${suffix}`,
     ERROR_MARK_ACTION: `${prefix}_ERROR_MARK_ACTION${suffix}`,
@@ -751,6 +759,8 @@ export const messagesREST = (prefix: string, suffix: string = ''): TMessagesREST
     MIXED_DATA: `${prefix}_MIXED_DATA${suffix}`,
     NOT_MIXED_DATA: `${prefix}_NOT_MIXED_DATA${suffix}`,
     ERROR_MIXED_DATA: `${prefix}_ERROR_MIXED_DATA${suffix}`,
+
+    INTERNAL_SERVER_ERROR: `${prefix}_INTERNAL_SERVER_ERROR${suffix}`,
   }
 }
 

@@ -420,6 +420,9 @@ const messagesREST = (prefix, suffix = '') => {
         USER_AUTHENTICATION_REFRESH: `${prefix}_USER_AUTHENTICATION_REFRESH${suffix}`,
         NOT_USER_AUTHENTICATION_REFRESH: `${prefix}_NOT_USER_AUTHENTICATION_REFRESH${suffix}`,
         ERROR_USER_AUTHENTICATION_REFRESH: `${prefix}_ERROR_USER_AUTHENTICATION_REFRESH${suffix}`,
+        ERROR_USER_NOT_FOUND: `${prefix}_ERROR_USER_NOT_FOUND${suffix}`,
+        REGISTER_USER_SUCCESS: `${prefix}_REGISTER_USER_SUCCESS${suffix}`,
+        USER_REGISTRATION_ERROR: `${prefix}_USER_REGISTRATION_ERROR${suffix}`,
         MARK_ACTION: `${prefix}_MARK_ACTION${suffix}`,
         NOT_MARK_ACTION: `${prefix}_NOT_MARK_ACTION${suffix}`,
         ERROR_MARK_ACTION: `${prefix}_ERROR_MARK_ACTION${suffix}`,
@@ -454,6 +457,7 @@ const messagesREST = (prefix, suffix = '') => {
         MIXED_DATA: `${prefix}_MIXED_DATA${suffix}`,
         NOT_MIXED_DATA: `${prefix}_NOT_MIXED_DATA${suffix}`,
         ERROR_MIXED_DATA: `${prefix}_ERROR_MIXED_DATA${suffix}`,
+        INTERNAL_SERVER_ERROR: `${prefix}_INTERNAL_SERVER_ERROR${suffix}`,
     };
 };
 exports.messagesREST = messagesREST;
