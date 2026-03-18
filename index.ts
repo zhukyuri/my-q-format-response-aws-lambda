@@ -794,9 +794,14 @@ export const normaliseMongoFilter = (
         excludeParams.includes(f)
       )
     ) {
-      _filter[f] = filter[f]
-
-      if (regexFields.includes(f)) _filter[f] = { $regex: new RegExp(_filter[f], 'gi') }
+      // Handle *In fields as MongoDB $in operator
+      if (f.endsWith('In') && Array.isArray(v)) {
+        const mongoField = f.slice(0, -2)
+        _filter[mongoField] = { $in: v.filter((item: any) => item !== null && item !== undefined) }
+      } else {
+        _filter[f] = filter[f]
+        if (regexFields.includes(f)) _filter[f] = { $regex: new RegExp(_filter[f], 'gi') }
+      }
     }
   })
 
